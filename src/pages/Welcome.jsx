@@ -1,63 +1,134 @@
-import React from 'react';
-import { PageContainer } from '@ant-design/pro-layout';
-import { Card, Alert, Typography } from 'antd';
-import { useIntl, FormattedMessage } from 'umi';
-import styles from './Welcome.less';
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
+import { InitForm } from 'antd-auto-form'
 
-const CodePreview = ({ children }) => (
-  <pre className={styles.pre}>
-    <code>
-      <Typography.Text copyable>{children}</Typography.Text>
-    </code>
-  </pre>
-);
 
-export default () => {
-  const intl = useIntl();
-  return (
-    <PageContainer>
-      <Card>
-        <Alert
-          message={intl.formatMessage({
-            id: 'pages.welcome.alertMessage',
-            defaultMessage: '更快更强的重型组件，已经发布。',
-          })}
-          type="success"
-          showIcon
-          banner
-          style={{
-            margin: -12,
-            marginBottom: 24,
-          }}
-        />
-        <Typography.Text strong>
-          <FormattedMessage id="pages.welcome.advancedComponent" defaultMessage="高级表格" />{' '}
-          <a
-            href="https://procomponents.ant.design/components/table"
-            rel="noopener noreferrer"
-            target="__blank"
-          >
-            <FormattedMessage id="pages.welcome.link" defaultMessage="欢迎使用" />
-          </a>
-        </Typography.Text>
-        <CodePreview>yarn add @ant-design/pro-table</CodePreview>
-        <Typography.Text
-          strong
-          style={{
-            marginBottom: 12,
-          }}
-        >
-          <FormattedMessage id="pages.welcome.advancedLayout" defaultMessage="高级布局" />{' '}
-          <a
-            href="https://procomponents.ant.design/components/layout"
-            rel="noopener noreferrer"
-            target="__blank"
-          >
-            <FormattedMessage id="pages.welcome.link" defaultMessage="欢迎使用" />
-          </a>
-        </Typography.Text>
-        <CodePreview>yarn add @ant-design/pro-layout</CodePreview>
-      </Card>
-    </PageContainer>
-  );
-};
+// type 类型有 table treeselect upload inputnumber datepicker daterange radio select textarea autoinput editor password input 
+
+let fields = {
+    equipmentNo: {
+        value: null,
+        type: 'select',
+        title: '设备编号',
+        name: ['equipmentNo'],
+        required: true,
+        options: [
+            {
+                label: "隐藏设备名称",
+                value: "1"
+            },
+            {
+                label: "正常option",
+                value: "2"
+            }
+        ],
+        //下拉框通过接口获取
+        // options:{
+        //   database:fetchPromise,//fetchPromise fetch(接口地址)
+        //   params:{} //参数
+        // }
+        linked: true,//声明该formitem为联动
+    },
+    equipmentName: {
+        value: null,
+        type: 'select',
+        title: '设备名称',
+        name: ['equipmentName'],
+        required: true,
+        options: [
+            {
+                label: "test1",
+                value: "1"
+            }
+        ],
+        belinked: {//声明该formitem为被联动
+            hides: [ //可以多个条件并存 数组内添加即可
+                {
+                    name: "equipmentNo", //联动的是哪个formitem
+                    equalvalue: "1", //这个formitem值为多少 hide
+                    //unequalvalue:"",//这个formitem值不是多少 hide  equalvalue与unequalvalue只存在1个
+                    required: true
+                }
+            ],
+            // options:{ //声明联动下拉 使用场景多级联动 ex: 省、市、区
+            //   database:fetchPromise,//fetchPromise fetch(被联动时调用的接口地址) 
+            //   params:{
+            //    equipmentNo:"linked" //key为需要联动的formitem ，value是linked表示根据该key联动 否则使用自己填写的key传入
+            //   } //参数
+            // }
+        }
+
+    },
+    positionNo: {
+        value: null,
+        type: 'input',
+        title: '设备位置号',
+        name: ['positionNo'],
+        required: false,
+    },
+    date: {
+        value: null,
+        type: 'datepicker',
+        title: '购入日期',
+        name: ['date'],
+        format:"YYYY-MM-DD",//返回的date格式
+        required: false,
+    },
+    daterange: {
+        value: null,
+        type: 'daterange',
+        title: '预计寿命',
+        name: ['daterange'],
+        format:"YYYY",//返回的date格式
+        required: false,
+    },
+    remark: {
+        value: null,
+        type: 'editor',
+        title: '备注',
+        name: ['remark'],
+        required: false,
+        //serverURL: "https://www.mocky.io/v2/5cc8019d300000980a055e76"//替换为自己的上传地址 富文本图片/附件
+        col: { span: 24 },//栅格布局 默认 12
+    },
+    pictureUrl: {
+        value: null,
+        type: 'upload',
+        title: '设备图片',
+        name: ['pictureUrl'],
+        required: false,
+        listType: "img",//上传展示类型
+        limit: 1, //限制图片上传数量
+        col: { span: 24 },
+        
+    },
+}
+
+
+export default function App() {
+    const [state, setstate] = useState('');
+
+    function saveData(values, fn) {
+        console.log(values);
+        fn();//提交后重置的回调
+    }
+
+    return (
+        <div style={{ padding: 24 }}>
+            <div style={{ height: 320 }}>
+                <InitForm
+                    fields={fields}
+                    submitData={(values, fn) => {
+                        saveData(values, fn)
+                    }}
+                    onChange={(changedValues, allValues) => {
+                        console.log(changedValues, allValues)
+                    }}
+                    submitting={false} //接口submit状态
+                >
+                </InitForm>
+            </div>
+
+        </div>
+    )
+}
