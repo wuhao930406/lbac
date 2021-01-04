@@ -32,6 +32,7 @@ export default defineConfig({
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
   theme: {
     'primary-color': defaultSettings.primaryColor,
+    'margin-md':"12px"
   },
   title: false,
   ignoreMomentLocale: true,

@@ -26,7 +26,7 @@ const Model = {
       if (response.status === 'ok') {
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
-        localStorage.setItem("token",token.jwt)
+        localStorage.setItem("TOKEN",token.jwt)
         message.success('🎉 🎉 🎉  登录成功！');
         let { redirect } = params;
 

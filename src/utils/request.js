@@ -31,7 +31,7 @@ const errorHandler = (error) => {
   if (response && response.status) {
     const errorText = codeMessage[response.status] || response.statusText;
     const { status, url } = response;
-    if (response.url.indexOf("api/user_token") == -1) {
+    if (response?.url.indexOf("api/user_token") == -1) {
       notification.error({
         message: `请求错误 ${status}: ${url}`,
         description: errorText,
@@ -41,7 +41,7 @@ const errorHandler = (error) => {
     }
 
   } else if (!response) {
-    if (response.url.indexOf("api/user_token") == -1) {
+    if (response?.url.indexOf("api/user_token") == -1) {
       notification.error({
         description: '您的网络发生异常，无法连接服务器',
         message: '网络异常',
@@ -67,7 +67,7 @@ const request = extend({
 
 // request拦截器, 改变url 或 options.
 request.interceptors.request.use(async (url, options) => {
-  let token = localStorage.getItem("token");
+  let token = localStorage.getItem("TOKEN");
   if (token) {
     const headers = {
       'Content-Type': 'application/json',
@@ -85,8 +85,7 @@ request.interceptors.request.use(async (url, options) => {
 
 // response拦截器, 处理response
 request.interceptors.response.use(async (response, options) => {
-  console.log(response)
-  if(response.url.indexOf("api/user_token") != -1){
+  if(response?.url.indexOf("api/user_token") != -1){
     return response
   }
   const data = await response.clone().json();

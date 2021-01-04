@@ -13,6 +13,7 @@ import RightContent from '@/components/GlobalHeader/RightContent';
 import { getMatchMenu } from '@umijs/route-utils';
 import logo from '../assets/logo.svg';
 
+
 const noMatch = (
   <Result
     status={403}
@@ -39,7 +40,7 @@ const menuDataRender = (menuList) =>
   });
 
 const defaultFooterDom = (
-  <a style={{textAlign:"center",marginBottom:24,color:"#999"}}>
+  <a style={{textAlign:"center",marginBottom:12,color:"#999"}}>
     告辰集团体验技术部出品
   </a>
 );
@@ -55,6 +56,11 @@ const BasicLayout = (props) => {
   } = props;
   const menuDataRef = useRef([]);
   useEffect(() => {
+    window.dataconfig = {
+      tableMethod:"GET",
+      tableTokenkey:"Authorization",     
+      serverURL:""  
+    }
     if (dispatch) {
       dispatch({
         type: 'user/fetchCurrent',

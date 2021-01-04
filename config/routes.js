@@ -21,7 +21,6 @@ export default [
           {
             path: '/',
             component: '../layouts/BasicLayout',
-            authority: ['admin', 'user'],
             routes: [
               {
                 path: '/',
@@ -29,32 +28,47 @@ export default [
               },
               {
                 path: '/welcome',
-                name: 'welcome',
+                name: '欢迎',
                 icon: 'smile',
                 component: './Welcome',
               },
               {
-                path: '/admin',
-                name: 'admin',
-                icon: 'crown',
-                component: './Admin',
-                authority: ['admin'],
+                path: '/basic',
+                name: '系统基础管理',
+                icon: 'setting',
                 routes: [
                   {
-                    path: '/admin/sub-page',
-                    name: 'sub-page',
-                    icon: 'smile',
-                    component: './Welcome',
-                    authority: ['admin'],
+                    path: '/basic/user',
+                    name: '用户管理',
+                    icon: 'user',
+                    component: './Basic/User',
                   },
                 ],
+                
               },
-              {
-                name: 'list.table-list',
-                icon: 'table',
-                path: '/list',
-                component: './TableList',
-              },
+
+              // {
+              //   path: '/admin',
+              //   name: 'admin',
+              //   icon: 'crown',
+              //   component: './Admin',
+              //   authority: ['admin'],
+              //   routes: [
+              //     {
+              //       path: '/admin/sub-page',
+              //       name: 'sub-page',
+              //       icon: 'smile',
+              //       component: './Welcome',
+              //       authority: ['admin'],
+              //     },
+              //   ],
+              // },
+              // {
+              //   name: 'list.table-list',
+              //   icon: 'table',
+              //   path: '/list',
+              //   component: './TableList',
+              // },
               {
                 component: './404',
               },
