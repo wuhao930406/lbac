@@ -71,7 +71,7 @@ let fields = {
         type: 'datepicker',
         title: '购入日期',
         name: ['date'],
-        format:"YYYY-MM-DD",//返回的date格式
+        format: "YYYY-MM-DD",//返回的date格式
         required: false,
     },
     daterange: {
@@ -79,7 +79,7 @@ let fields = {
         type: 'daterange',
         title: '预计寿命',
         name: ['daterange'],
-        format:"YYYY",//返回的date格式
+        format: "YYYY",//返回的date格式
         required: false,
     },
     remark: {
@@ -100,7 +100,7 @@ let fields = {
         listType: "img",//上传展示类型
         limit: 1, //限制图片上传数量
         col: { span: 24 },
-        
+
     },
 }
 
@@ -108,27 +108,27 @@ let fields = {
 export default function App() {
     const [state, setstate] = useState('');
 
-    function saveData(values, fn) {
-        console.log(values);
-        fn();//提交后重置的回调
-    }
-
     return (
-        <div style={{ padding: 24 }}>
-            <div style={{ height: 320 }}>
-                <InitForm
-                    fields={fields}
-                    submitData={(values, fn) => {
-                        saveData(values, fn)
-                    }}
-                    onChange={(changedValues, allValues) => {
-                        console.log(changedValues, allValues)
-                    }}
-                    submitting={false} //接口submit状态
-                >
-                </InitForm>
+        <div style={{ height: '100%' }}>
+            <div
+                style={{
+                    width: '100%',
+                    height: '100%',
+                    background: `url(${require("../assets/bgkj.jpg")}) no-repeat center`,
+                    backgroundSize: 'cover',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexDirection: 'column',
+                }}
+            >
+                <h2 style={{ textShadow: '0 0 4px #fff', color: '#fff', fontSize: 32 }}>
+                    欢迎使用三保打工网
+          </h2>
+                <p style={{ textShadow: '0 0 4px #fff', color: '#f0f0f0', fontSize: 16 }}>
+                    —— 管理工厂、工人、员工、权限...
+          </p>
             </div>
-
         </div>
     )
 }

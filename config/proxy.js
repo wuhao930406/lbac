@@ -8,25 +8,25 @@
 export default {
   dev: {
     '/api/': {
-      target: 'https://preview.pro.ant.design',
+      target: 'http://49.235.82.163/api',
       changeOrigin: true,
       pathRewrite: {
-        '^': '',
+        '^/api': '',
       },
     },
   },
   test: {
     '/api/': {
-      target: 'https://preview.pro.ant.design',
+      target: 'http://49.235.82.163/api',
       changeOrigin: true,
       pathRewrite: {
-        '^': '',
+        '^/api': '',
       },
     },
   },
   pre: {
     '/api/': {
-      target: 'your pre url',
+      target: 'http://49.235.82.163/api',
       changeOrigin: true,
       pathRewrite: {
         '^': '',

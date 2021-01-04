@@ -33,9 +33,14 @@ const Login = (props) => {
 
   const handleSubmit = (values) => {
     const { dispatch } = props;
+    const postdata = {
+      name:values.userName,
+      password:values.password
+    }
+
     dispatch({
       type: 'login/login',
-      payload: { ...values, type },
+      payload: { ...postdata },
     });
   };
 
@@ -118,7 +123,7 @@ const Login = (props) => {
             />
           </>
 
-        <div
+        {/* <div
           style={{
             marginBottom: 24,
           }}
@@ -133,7 +138,7 @@ const Login = (props) => {
           >
             <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码" />
           </a>
-        </div>
+        </div> */}
       </ProForm>
     </div>
   );

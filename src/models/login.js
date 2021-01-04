@@ -12,15 +12,21 @@ const Model = {
   },
   effects: {
     *login({ payload }, { call, put }) {
-      const response = yield call(fakeAccountLogin, payload);
+      const response = {
+        status: 'ok',
+        currentAuthority: 'admin',
+      },
+      token = yield call(fakeAccountLogin, payload);
+      
       yield put({
         type: 'changeLoginStatus',
         payload: response,
       }); // Login successfully
-
+      console.log(token.jwt)
       if (response.status === 'ok') {
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
+        localStorage.setItem("token",token.jwt)
         message.success('🎉 🎉 🎉  登录成功！');
         let { redirect } = params;
 
