@@ -1,4 +1,4 @@
-import { queryCurrent, query as queryUsers } from '@/services/user';
+import { addrole, editrole, adduser, edituser,addstore,editstore } from '@/services/basic';
 
 const UserModel = {
   namespace: 'basic',
@@ -6,42 +6,38 @@ const UserModel = {
     currentUser: {},
   },
   effects: {
-    *fetch(_, { call, put }) {
-      const response = yield call(queryUsers);
-      yield put({
-        type: 'save',
-        payload: response,
-      });
+    *addrole({ payload }, { call, put }) {
+      const response = yield call(addrole, payload);
+      return response
+    },
+    *editrole({ payload }, { call, put }) {
+      const response = yield call(editrole, payload);
+      return response
     },
 
-    *fetchCurrent(_, { call, put }) {
-      const response = yield call(queryCurrent);
-      yield put({
-        type: 'saveCurrentUser',
-        payload: response?.data,
-      });
+    *adduser({ payload }, { call, put }) {
+      const response = yield call(adduser, payload);
+      return response
     },
+    *edituser({ payload }, { call, put }) {
+      const response = yield call(edituser, payload);
+      return response
+    },
+    *addstore({ payload }, { call, put }) {
+      const response = yield call(addstore, payload);
+      return response
+    },
+    *editstore({ payload }, { call, put }) {
+      const response = yield call(editstore, payload);
+      return response
+    },
+
+
   },
   reducers: {
     saveCurrentUser(state, action) {
-      return { ...state, currentUser: action.payload || {} };
-    },
-
-    changeNotifyCount(
-      state = {
-        currentUser: {},
-      },
-      action,
-    ) {
-      return {
-        ...state,
-        currentUser: {
-          ...state.currentUser,
-          notifyCount: action.payload.totalCount,
-          unreadCount: action.payload.unreadCount,
-        },
-      };
-    },
+      return { ...state, ...action.payload };
+    }
   },
 };
 export default UserModel;

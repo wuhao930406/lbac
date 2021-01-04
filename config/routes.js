@@ -40,12 +40,33 @@ export default [
                   {
                     path: '/basic/user',
                     name: '用户管理',
-                    icon: 'user',
                     component: './Basic/User',
                   },
+                  {
+                    path: '/basic/role',
+                    name: '角色管理',
+                    component: './Basic/Role',
+                  },
                 ],
-                
               },
+              {
+                path: '/weapp',
+                name: '公众号信息管理',
+                icon: 'wechat',
+                routes: [
+                  {
+                    path: '/weapp/store',
+                    name: '门店管理',
+                    component: './Weapp/Store',
+                  },
+                  {
+                    path: '/weapp/factory',
+                    name: '工厂管理',
+                    component: './Weapp/Factory',
+                  },
+                ],
+              },
+
 
               // {
               //   path: '/admin',

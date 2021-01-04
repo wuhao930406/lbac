@@ -277,8 +277,15 @@ let InitForm = ({ fields, onChange, submitting, submitData, actions, col, mode, 
         dom = database
       } else {
         let res = await database(params), dataList = [];
-        if (res.code == "0000") {
-          dataList = res?.data?.dataList;
+        if (res.code == 0) {
+          dataList = res?.data?.dataList.map((it)=>{
+            let label = item.formart?item.formart[1]:"name",
+                value = item.formart?item.formart[0]:"id"
+            return {
+              label:it[label],
+              value:it[value]
+            }
+          });
         }
         dom = dataList;
       }
