@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import ReactDOM from 'react-dom';
-import { Card, Switch, Button, Modal, message, Popconfirm, Input } from 'antd'
+import { Card, Switch, Button, Modal, message, Popconfirm, Input, Tag } from 'antd'
 import AutoTable from '@/components/AutoTable'
 import InitForm from '@/components/InitForm'
 import { setenable, role, store, getuser, deleteuser } from '@/services/basic'
@@ -164,26 +164,45 @@ function User(props) {
             }
         },
         {
+            title: '角色',
+            dataIndex: 'roles',
+            key: 'roles',
+            search: false,
+            render: (_, record) => {
+                return Array.isArray(record.roles) ? record.roles.map((it, i) => <Tag key={i} style={{ float: "left" }}>{it.role_name}</Tag>) : "-"
+            }
+        },
+        {
+            title: '门店',
+            dataIndex: 'stores',
+            key: 'stores',
+            search: false,
+            render: (_, record) => {
+                return Array.isArray(record.stores) ? record.stores.map((it, i) => <Tag color="lightblue" key={i}>{it.store_name}</Tag>) : "-"
+            }
+        },
+
+        {
             title: '操作',
             valueType: 'option',
             render: (text, record, _, action) => [
                 <a
                     onClick={() => {
-                        getuser(record.id).then(res => {
-                            let item = res.data;
-                            cf(fields => {
-                                for (let i in fields) {
-                                    fields[i].value = item[i];
-                                    if (i == "store_ids" || i == "role_ids") {//-----------------------------------------
-                                        fields[i].value = [];
-                                    }
+                        cf(fields => {
+                            for (let i in fields) {
+                                fields[i].value = record[i];
+                                if (i == "password") {
+                                    fields[i].hides = true;
                                 }
-                                return { ...fields }
-                            });
-                            cvs(true);
-
-                        })
-
+                                if (i == "store_ids") {
+                                    fields[i].value = record.stores.map((it) => it.store_id);
+                                } else if (i == "role_ids") {
+                                    fields[i].value = record.roles.map((it) => it.role_id);
+                                }
+                            }
+                            return { ...fields }
+                        });
+                        cvs(true);
                         ciftype({
                             val: "edit",
                             title: "编辑用户",
@@ -212,7 +231,24 @@ function User(props) {
                     </a>
                 </Popconfirm>
                 ,
-
+                <Popconfirm
+                    placement="bottom"
+                    title={"确认重置该用户密码？"}
+                    onConfirm={() => {
+                        deleteuser(record.id).then(res => {
+                            if (res.code == 0) {
+                                message.success("操作成功");
+                                actionRef.current.reload();
+                            }
+                        })
+                    }}
+                    okText="删除"
+                    onCancel="取消"
+                >
+                    <a style={{ color: "#f50" }}>
+                        删除
+                    </a>
+                </Popconfirm>
             ],
         },
     ]

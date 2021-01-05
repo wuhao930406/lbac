@@ -101,7 +101,9 @@ let InitForm = ({ fields, onChange, submitting, submitData, actions, col, mode, 
           curfileList = item.value ? item.value.fileList ? item.value.fileList : item.value : [];
         defaultfiles[i] = curfileList;
         //formart value
-        record.value = record.value ? mockfile(Array.isArray(record.value) ? record.value : [record.value]) : [];
+        if ((Array.isArray(curfileList) && curfileList.some((it) => typeof (it) == "string")) || typeof (curfileList) == "string") {
+          record.value = record.value ? mockfile(Array.isArray(record.value) ? record.value : [record.value]) : [];
+        }
       } else if (record.type === "datepicker") {
         record.value = record.value ? moment(record.value) : undefined;
       } else if (record.type === "daterange") {
