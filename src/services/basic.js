@@ -60,6 +60,12 @@ export async function deleteuser(params) {
   });
 }
 
+//用户详情
+export async function getuser(params) {
+  return request('/api/user'+ bodyParse(params));
+}
+
+
 //门店列表
 export async function store(params) {
   return request('/api/store'+ bodyParse(params));

@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react';
 import ReactDOM from 'react-dom';
-import { Card, Switch, Button, Modal } from 'antd'
+import { Card, Switch, Button, Modal,message,Popconfirm,Input } from 'antd'
 import AutoTable from '@/components/AutoTable'
 import InitForm from '@/components/InitForm'
-import { setenable, role, store } from '@/services/basic'
+import { setenable, role, store,getuser,deleteuser  } from '@/services/basic'
 import { connect } from 'umi'
 
 // type 类型有 table treeselect upload inputnumber datepicker daterange radio select textarea autoinput editor password input 
@@ -14,6 +14,13 @@ let defaultFields = {
         type: 'input',
         title: '用户名',
         name: ['name'],
+        required: true,
+    },
+    password: {
+        value: null,
+        type: 'password',
+        title: '密码',
+        name: ['password'],
         required: true,
     },
     sex: {
@@ -156,6 +163,53 @@ function User(props) {
                 return record.is_admin ? "是" : "否"
             }
         },
+        {
+            title: '操作',
+            valueType: 'option',
+            render: (text, record, _, action) => [
+                <a
+                    onClick={() => {
+                        cvs(true);
+                        getuser({id:record.id}).then(res=>{
+
+                        })
+                        cf(fields => {
+                            for (let i in fields) {
+                                fields[i].value = record[i];
+                            }
+                            return { ...fields }
+                        });
+                        ciftype({
+                            val: "edit",
+                            title: "编辑用户",
+                            id: record.id
+                        })
+                    }}
+                >
+                    编辑
+                </a>,
+                <Popconfirm
+                    placement="bottom"
+                    title={"确认删除该用户？"}
+                    onConfirm={() => {
+                        deleteuser(record.id).then(res => {
+                            if (res.code == 0) {
+                                message.success("操作成功");
+                                actionRef.current.reload();
+                            }
+                        })
+                    }}
+                    okText="删除"
+                    onCancel="取消"
+                >
+                    <a style={{color:"#f50"}}>
+                        删除
+                    </a>
+                </Popconfirm>
+                ,
+
+            ],
+        },
     ]
 
     let extrarender = (<div>
@@ -163,7 +217,7 @@ function User(props) {
             cvs(true);
             cf(fields => {
                 for (let i in fields) {
-                    fields[i].value = null;
+                    fields[i].value = '';
                     if(i=="enable"){
                         fields[i].value = true;
                     }
@@ -195,7 +249,7 @@ function User(props) {
             })
         } else if (iftype.val == "edit") {
             dispatch({
-                type: 'basic/editrole',
+                type: 'basic/edituser',
                 payload: { ...values, id: iftype.id }
             }).then(res => {
                 if (res.code == 0) {
@@ -214,7 +268,6 @@ function User(props) {
                 actionRef={actionRef}
                 path="/api/user"
             ></AutoTable>
-
             <Modal
                 maskClosable={false}
                 title={iftype.title}

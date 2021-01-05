@@ -47,6 +47,7 @@ class AutoTable extends PureComponent {
       path, //路径
       extraparams = {}, //拓展查询参数
       rowSelection, //行选择
+      expandable,//可展开
       tableRender, //表格布局自定义
       getDefaultSelected, //获取默认选中的数据
       rowClassNameFn, //选中后行样式
@@ -179,6 +180,7 @@ class AutoTable extends PureComponent {
         return defaultval
       }}
       rowSelection={rowSelection ? rowSelection : false}
+      expandable={expandable?expandable: false}
       tableAlertRender={false} //取消顶部筛选操作
       tableRender={tableRender ? (_, dom) => tableRender(_, dom) : (_, dom) => dom} //自定义表格主体
       rowClassName={rowClassNameFn ? (record, index) => rowClassNameFn(record, index) : ""} //自定义行高亮

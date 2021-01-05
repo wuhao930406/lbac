@@ -80,7 +80,7 @@ function Store(props) {
                     okText="删除"
                     onCancel="取消"
                 >
-                    <a>
+                    <a style={{color:"#f50"}}>
                         删除
                     </a>
                 </Popconfirm>

@@ -1,4 +1,4 @@
-import { addstore,editstore } from '@/services/weapp';
+import { addstore, editstore, addfactory, editfactory } from '@/services/weapp';
 
 const UserModel = {
   namespace: 'weapp',
@@ -14,7 +14,14 @@ const UserModel = {
       const response = yield call(editstore, payload);
       return response
     },
-
+    *addfactory({ payload }, { call, put }) {
+      const response = yield call(addfactory, payload);
+      return response
+    },
+    *editfactory({ payload }, { call, put }) {
+      const response = yield call(editfactory, payload);
+      return response
+    },
 
   },
   reducers: {

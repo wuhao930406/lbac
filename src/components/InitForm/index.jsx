@@ -278,12 +278,12 @@ let InitForm = ({ fields, onChange, submitting, submitData, actions, col, mode, 
       } else {
         let res = await database(params), dataList = [];
         if (res.code == 0) {
-          dataList = res?.data?.dataList.map((it)=>{
-            let label = item.formart?item.formart[1]:"name",
-                value = item.formart?item.formart[0]:"id"
+          dataList = res?.data?.dataList.map((it) => {
+            let label = item.formart ? item.formart[1] : "name",
+              value = item.formart ? item.formart[0] : "id"
             return {
-              label:it[label],
-              value:it[value]
+              label: it[label],
+              value: it[value]
             }
           });
         }
@@ -357,7 +357,9 @@ let InitForm = ({ fields, onChange, submitting, submitData, actions, col, mode, 
 
           }}
         >
-          <Row gutter={24}>
+          <Row gutter={24} style={{position:"relative"}}>
+              <Input type="text" name="userName" style={{position:"absolute",top:-999}}></Input>
+              <Input type="password" style={{position:"absolute",top:-999}}></Input>
             {Dom.map(
               (item, i) => {
                 let extraprops = getSelectLinked(item);
@@ -608,7 +610,7 @@ let InitForm = ({ fields, onChange, submitting, submitData, actions, col, mode, 
                 } else if (item.type == 'upload') {
                   const props = {
                     name: "file",
-                    action: item.serverURL ? item.serverURL : window?.dataconfig?.serverURL ,
+                    action: item.serverURL ? item.serverURL : window?.dataconfig?.serverURL,
                     listType: item.listType == "img" ? "picture-card" : 'text',
                     multiple: item.multiple ? item.multiple : false,
                     defaultFileList: item.value ? item.value.fileList ? item.value.fileList : [] : [],

@@ -47,6 +47,11 @@ export default [
                     name: '角色管理',
                     component: './Basic/Role',
                   },
+                  {
+                    path: '/basic/menu',
+                    name: '菜单权限',
+                    component: './Basic/Menu',
+                  },
                 ],
               },
               {
@@ -66,30 +71,6 @@ export default [
                   },
                 ],
               },
-
-
-              // {
-              //   path: '/admin',
-              //   name: 'admin',
-              //   icon: 'crown',
-              //   component: './Admin',
-              //   authority: ['admin'],
-              //   routes: [
-              //     {
-              //       path: '/admin/sub-page',
-              //       name: 'sub-page',
-              //       icon: 'smile',
-              //       component: './Welcome',
-              //       authority: ['admin'],
-              //     },
-              //   ],
-              // },
-              // {
-              //   name: 'list.table-list',
-              //   icon: 'table',
-              //   path: '/list',
-              //   component: './TableList',
-              // },
               {
                 component: './404',
               },

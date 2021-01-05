@@ -17,13 +17,12 @@ const Model = {
         currentAuthority: 'admin',
       },
       token = yield call(fakeAccountLogin, payload);
-      
       yield put({
         type: 'changeLoginStatus',
         payload: response,
       }); // Login successfully
-      console.log(token.jwt)
-      if (response.status === 'ok') {
+
+      if (token.jwt) {
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         localStorage.setItem("TOKEN",token.jwt)

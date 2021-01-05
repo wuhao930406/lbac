@@ -9,6 +9,16 @@ import { connect } from 'umi'
 // type 类型有 table treeselect upload inputnumber datepicker daterange radio select textarea autoinput editor password input 
 
 let defaultFields = {
+    factory_image: {
+        value: null,
+        type: 'upload',
+        title: '工厂图片',
+        name: ['factory_image'],
+        required: false,
+        col: { span: 24 },//栅格布局 默认 12
+        listType: "img",//上传展示类型
+        limit: 1, //限制图片上传数量
+    },
     name: {
         value: null,
         type: 'input',
@@ -24,6 +34,16 @@ let defaultFields = {
         required: false,
         col: { span: 24 },//栅格布局 默认 12
     },
+    description: {
+        value: null,
+        type: 'textarea',
+        title: '工厂介绍',
+        name: ['description'],
+        required: false,
+        col: { span: 24 },//栅格布局 默认 12
+    },
+
+
 }
 
 
@@ -31,7 +51,6 @@ function Factory(props) {
     const [vs, cvs] = useState(false),//表单显/隐
         [fields, cf] = useState(defaultFields),
         [iftype, ciftype] = useState({});
-        alert(0)
     const actionRef = useRef();
     const columns = [
         {
@@ -51,7 +70,7 @@ function Factory(props) {
             search: false,
         },
         {
-            title: '描述',
+            title: '工厂介绍',
             dataIndex: 'description',
             key: 'description',
             search: false,
@@ -92,7 +111,7 @@ function Factory(props) {
                     okText="删除"
                     onCancel="取消"
                 >
-                    <a>
+                    <a style={{color:"#f50"}}>
                         删除
                     </a>
                 </Popconfirm>
