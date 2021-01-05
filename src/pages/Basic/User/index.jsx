@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react';
 import ReactDOM from 'react-dom';
-import { Card, Switch, Button, Modal,message,Popconfirm,Input } from 'antd'
+import { Card, Switch, Button, Modal, message, Popconfirm, Input } from 'antd'
 import AutoTable from '@/components/AutoTable'
 import InitForm from '@/components/InitForm'
-import { setenable, role, store,getuser,deleteuser  } from '@/services/basic'
+import { setenable, role, store, getuser, deleteuser } from '@/services/basic'
 import { connect } from 'umi'
 
 // type 类型有 table treeselect upload inputnumber datepicker daterange radio select textarea autoinput editor password input 
@@ -169,16 +169,21 @@ function User(props) {
             render: (text, record, _, action) => [
                 <a
                     onClick={() => {
-                        cvs(true);
-                        getuser({id:record.id}).then(res=>{
+                        getuser(record.id).then(res => {
+                            let item = res.data;
+                            cf(fields => {
+                                for (let i in fields) {
+                                    fields[i].value = item[i];
+                                    if (i == "store_ids" || i == "role_ids") {//-----------------------------------------
+                                        fields[i].value = [];
+                                    }
+                                }
+                                return { ...fields }
+                            });
+                            cvs(true);
 
                         })
-                        cf(fields => {
-                            for (let i in fields) {
-                                fields[i].value = record[i];
-                            }
-                            return { ...fields }
-                        });
+
                         ciftype({
                             val: "edit",
                             title: "编辑用户",
@@ -202,7 +207,7 @@ function User(props) {
                     okText="删除"
                     onCancel="取消"
                 >
-                    <a style={{color:"#f50"}}>
+                    <a style={{ color: "#f50" }}>
                         删除
                     </a>
                 </Popconfirm>
@@ -218,10 +223,10 @@ function User(props) {
             cf(fields => {
                 for (let i in fields) {
                     fields[i].value = '';
-                    if(i=="enable"){
+                    if (i == "enable") {
                         fields[i].value = true;
                     }
-                    if(i=="store_ids"||i=="role_ids"){
+                    if (i == "store_ids" || i == "role_ids") {
                         fields[i].value = [];
                     }
                 }
