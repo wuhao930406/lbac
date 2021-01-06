@@ -194,7 +194,7 @@ let InitForm = ({ fields, onChange, submitting, submitData, actions, col, mode, 
         });
         let rq = requiredlist.some(it => it == true);
         let unrq = unrequiredlist.some(it => it == true);
-        hides = rq || unrq;
+        hides = hides ? hides : (rq || unrq);
       }
 
       if (!Array.isArray(item.belinked.options) && item.belinked.options) {
