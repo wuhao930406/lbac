@@ -63,6 +63,12 @@ function Factory(props) {
             title: '工厂图片',
             dataIndex: 'factory_image',
             key: 'factory_image',
+            render:(_,record)=>{
+                return record.factory_image.map(it=>{
+                    console.log(it)
+                    return 1
+                })
+            }
         },
         {
             title: '工厂名称',

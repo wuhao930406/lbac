@@ -39,6 +39,7 @@ class AutoTable extends PureComponent {
       x, y,
       dataSource,
       defaultPageSize,
+      bordered,//边框
       pagination, //分页
       columns, //表头
       rowKey, //行key
@@ -179,6 +180,7 @@ class AutoTable extends PureComponent {
         let defaultval = pagination == "false" ? data.dataList : data ? data.list : [];//分页或不分页的接口返回数据
         return defaultval
       }}
+      bordered={bordered}
       rowSelection={rowSelection ? rowSelection : false}
       expandable={expandable?expandable: false}
       tableAlertRender={false} //取消顶部筛选操作

@@ -1,86 +1,210 @@
 import React, { useState, useRef } from 'react';
 import ReactDOM from 'react-dom';
-import { Card, Switch, Button, Modal, message, Popconfirm } from 'antd'
+import { Card, Switch, Button, Modal, message, Popconfirm, Tag } from 'antd'
 import AutoTable from '@/components/AutoTable'
 import InitForm from '@/components/InitForm'
-import { deletefactory, role, factory } from '@/services/weapp'
+import { deletejob, getclassify, getkeyword, factory } from '@/services/weapp'
 import { connect } from 'umi'
 
 // type 类型有 table treeselect upload inputnumber datepicker daterange radio select textarea autoinput editor password input 
 
-let defaultFields = {
-    factory_image: {
-        value: null,
-        type: 'upload',
-        title: '工厂图片',
-        name: ['factory_image'],
-        required: false,
-        col: { span: 24 },//栅格布局 默认 12
-        listType: "img",//上传展示类型
-        limit: 4, //限制图片上传数量
-    },
-    name: {
-        value: null,
-        type: 'input',
-        title: '工厂名称',
-        name: ['name'],
-        required: true,
-    },
-    address: {
-        value: null,
-        type: 'textarea',
-        title: '地址',
-        name: ['address'],
-        required: false,
-        col: { span: 24 },//栅格布局 默认 12
-    },
-    contact: {
-        value: null,
-        type: 'input',
-        title: '联系方式',
-        name: ['contact'],
-        required: false,
-        col: { span: 24 },//栅格布局 默认 12
-    },
-    description: {
-        value: null,
-        type: 'textarea',
-        title: '工厂介绍',
-        name: ['description'],
-        required: false,
-        col: { span: 24 },//栅格布局 默认 12
-    },
-}
 
 
-function Factory(props) {
+function Recruit(props) {
     const [vs, cvs] = useState(false),//表单显/隐
-        [fields, cf] = useState(defaultFields),
+        [fields, cf] = useState({
+            name: {
+                value: null,
+                type: 'input',
+                title: '招聘标题',
+                name: ['name'],
+                required: true,
+            },
+            factory_id: {
+                value: null,
+                type: 'select',
+                title: '选择需要招聘的工厂',
+                name: ['factory_id'],
+                required: true,
+                options: {
+                    database: factory,
+                    params: { is_all: 1 }
+                }
+            },
+            min_month_salary: {
+                value: null,
+                type: 'inputnumber',
+                title: '最低月薪(元)',
+                name: ['min_month_salary'],
+                required: true,
+            },
+            max_month_salary: {
+                value: null,
+                type: 'inputnumber',
+                title: '最高月薪(元)',
+                name: ['max_month_salary'],
+                required: true,
+            },
+            hour_salary: {
+                value: null,
+                type: 'inputnumber',
+                title: '时薪 (小时/元)',
+                name: ['hour_salary'],
+                required: true,
+            },
+            classify: {
+                value: null,
+                type: 'cascader',
+                title: '选择分类',//{ label: 'name', value: 'code', children: 'items' }
+                name: ['classify'],
+                required: true,
+                fieldNames: {
+                    label: "name",
+                    value: "id",
+                    children: "min_classifies"
+                },
+                options: {
+                    database: getclassify,
+                    params: { is_all: 1 }
+                }
+            },
+            keyword_ids: {
+                value: null,
+                type: 'select',
+                title: '关键词',
+                name: ['keyword_ids'],
+                required: false,
+                multiple: true,
+                options: {
+                    database: getkeyword,
+                    params: { is_all: 1 }
+                }
+            },
+            subsidy: {
+                value: null,
+                type: 'input',
+                title: '补贴',
+                name: ['subsidy'],
+                required: false,
+            },
+            status: {
+                value: "close",
+                type: 'select',
+                title: '发布状态',
+                name: ['status'],
+                required: true,
+                options: [
+                    {
+                        label: "发布",
+                        value: "open"
+                    },
+                    {
+                        label: "下架",
+                        value: "close"
+                    }
+                ]
+            },
+            welfare: {
+                value: null,
+                type: 'textarea',
+                title: '薪资福利',
+                name: ['welfare'],
+                required: false,
+                col: { span: 24 },//栅格布局 默认 12
+            },
+            condition: {
+                value: null,
+                type: 'textarea',
+                title: '招聘条件',
+                name: ['condition'],
+                required: false,
+                col: { span: 24 },//栅格布局 默认 12
+            },
+            job_description: {
+                value: null,
+                type: 'textarea',
+                title: '岗位介绍',
+                name: ['job_description'],
+                required: false,
+                col: { span: 24 },//栅格布局 默认 12
+            },
+
+        }),
         [iftype, ciftype] = useState({});
     const actionRef = useRef();
     const columns = [
         {
-            title: '工厂图片',
-            dataIndex: 'factory_image',
-            key: 'factory_image',
+            title: '工厂信息',
+            search: false,
+            children: [
+                {
+                    title: '工厂名称',
+                    dataIndex: 'name',
+                    key: 'name',
+                    ellipsis: true,
+                    render: (_, record) => {
+                        return <span>{record.factory.name}</span>
+                    }
+                },
+                {
+                    title: '联系方式',
+                    dataIndex: 'contact',
+                    key: 'contact',
+                    render: (_, record) => {
+                        return <span>{record.factory.contact}</span>
+                    }
+                },
+            ]
         },
         {
-            title: '工厂名称',
+            title: '岗位名称',
             dataIndex: 'name',
             key: 'name',
         },
         {
-            title: '地址',
-            dataIndex: 'address',
-            key: 'address',
+            title: '月薪范围(元)',
+            dataIndex: 'range',
+            key: 'range',
+            search: false,
+            render: (_, record) => {
+                return <span>{record.min_month_salary + " - " + record.max_month_salary} </span>
+            }
+        },
+        {
+            title: '时薪 (小时/元)',
+            dataIndex: 'hour_salary',
+            key: 'hour_salary',
             search: false,
         },
         {
-            title: '工厂介绍',
-            dataIndex: 'description',
-            key: 'description',
+            title: '补贴',
+            dataIndex: 'subsidy',
+            key: 'subsidy',
             search: false,
         },
+        // {
+        //     title: '主分类',
+        //     dataIndex: 'max_classify_name',
+        //     key: 'max_classify_name',
+        //     search: false,
+        // },
+        // {
+        //     title: '子分类',
+        //     dataIndex: 'min_classify_name',
+        //     key: 'min_classify_name',
+        //     search: false,
+        // },
+        // {
+        //     title: '关键词',
+        //     dataIndex: 'keywords',
+        //     key: 'keywords',
+        //     search: false,
+        //     render: (_, record) => {
+        //         return <span>{record.keywords.map(it => {
+        //             return <Tag>{it.keyword_name}</Tag>
+        //         })} </span>
+        //     }
+        // },
         {
             title: '操作',
             valueType: 'option',
@@ -91,12 +215,18 @@ function Factory(props) {
                         cf(fields => {
                             for (let i in fields) {
                                 fields[i].value = record[i];
+                                if(i=="classify"){
+                                    fields[i].value = [record.max_classify_id,record.min_classify_id] 
+                                }
+                                if (i == "keyword_ids") {
+                                    fields[i].value = record.keywords && record.keywords.map((it)=>it.keyword_id);
+                                }
                             }
                             return { ...fields }
                         });
                         ciftype({
                             val: "edit",
-                            title: "编辑工厂",
+                            title: "编辑岗位",
                             id: record.id
                         })
                     }}
@@ -105,9 +235,9 @@ function Factory(props) {
                 </a>,
                 <Popconfirm
                     placement="bottom"
-                    title={"确认删除该工厂？"}
+                    title={"确认删除该岗位？"}
                     onConfirm={() => {
-                        deletefactory(record.id).then(res => {
+                        deletejob(record.id).then(res => {
                             if (res.code == 0) {
                                 message.success("操作成功");
                                 actionRef.current.reload();
@@ -117,7 +247,7 @@ function Factory(props) {
                     okText="删除"
                     onCancel="取消"
                 >
-                    <a style={{color:"#f50"}}>
+                    <a style={{ color: "#f50" }}>
                         删除
                     </a>
                 </Popconfirm>
@@ -133,12 +263,18 @@ function Factory(props) {
             cf(fields => {
                 for (let i in fields) {
                     fields[i].value = null;
+                    if (i == "status") {
+                        fields[i].value = "close";
+                    }
+                    if (i == "keyword_ids") {
+                        fields[i].value = [];
+                    }
                 }
                 return { ...fields }
             });
             ciftype({
                 val: "add",
-                title: "新增工厂"
+                title: "新增岗位"
             })
         }}>新增</Button>
     </div>)
@@ -146,10 +282,16 @@ function Factory(props) {
 
     let saveData = (values) => {
         let { dispatch } = props;
+        let postdata = {
+            ...values,
+            max_classify_id: values.classify[0],
+            min_classify_id: values.classify[1]
+        }
+        delete postdata.classify;
         if (iftype.val == "add") {
             dispatch({
-                type: 'weapp/addfactory',
-                payload: values
+                type: 'weapp/addjob',
+                payload: postdata
             }).then(res => {
                 if (res.code == 0) {
                     message.success("操作成功");
@@ -159,8 +301,8 @@ function Factory(props) {
             })
         } else if (iftype.val == "edit") {
             dispatch({
-                type: 'weapp/editfactory',
-                payload: { ...values, id: iftype.id }
+                type: 'weapp/editjob',
+                payload: { ...postdata, id: iftype.id }
             }).then(res => {
                 if (res.code == 0) {
                     message.success("操作成功");
@@ -176,7 +318,8 @@ function Factory(props) {
             <AutoTable
                 columns={columns}
                 actionRef={actionRef}
-                path="/api/factory"
+                path="/api/job"
+                bordered={true}
             ></AutoTable>
 
             <Modal
@@ -198,7 +341,7 @@ function Factory(props) {
                         //联动操作
                     }}
                     submitting={
-                        props.loading.effects['weapp/addfactory'] || !vs
+                        props.loading.effects['weapp/addjob'] || !vs
                     }
                 >
                 </InitForm>
@@ -213,4 +356,4 @@ function Factory(props) {
 export default connect(({ weapp, loading }) => ({
     weapp,
     loading,
-}))(Factory)
+}))(Recruit)

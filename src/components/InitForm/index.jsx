@@ -13,6 +13,7 @@ import {
   Button,
   AutoComplete,
   Drawer,
+  Cascader,
   ConfigProvider
 } from 'antd';
 import moment from 'moment';
@@ -29,19 +30,28 @@ const { TreeNode } = TreeSelect;
 const { RangePicker } = DatePicker;
 let { Option } = Select;
 
-let loop = (data) => (data && data.length > 0) && data.map(item => {
-  const title = <span>{item.title}</span>;
-  if (item.children) {
+
+
+let loop = (data, title, key, children) => (data && data.length > 0) && data.map(item => {
+  let defaulttitle = title ? title : "title",
+    defaultkey = key ? key : "key",
+    defaultchildren = children ? children : "children";
+
+  const titles = <span>{item[defaulttitle]}</span>;
+  if (item[defaultchildren]) {
     return (
-      <TreeNode value={item.key} key={item.key} title={title}>
-        {loop(item.children)}
+      <TreeNode value={item[defaultkey]} key={item[defaultkey]} title={titles}>
+        {loop(item[defaultchildren])}
       </TreeNode>
     );
   } else {
-    return <TreeNode value={item.key} key={item.key} title={title} />;
+    return <TreeNode value={item[defaultkey]} key={item[defaultkey]} title={titles} />;
   }
 });
 
+function filter(inputValue, path) {
+  return path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
+}
 
 function formartData(item, val) {
   let formartValue = val;
@@ -283,7 +293,7 @@ let InitForm = ({ fields, onChange, submitting, submitData, actions, col, mode, 
           dataList = res?.data?.dataList.map((it) => {
             let label = item.formart ? item.formart[1] : "name",
               value = item.formart ? item.formart[0] : "id"
-            return {
+            return item.type == "cascader" ? it : {
               label: it[label],
               value: it[value]
             }
@@ -359,9 +369,9 @@ let InitForm = ({ fields, onChange, submitting, submitData, actions, col, mode, 
 
           }}
         >
-          <Row gutter={24} style={{position:"relative"}}>
-              <Input type="text" name="userName" style={{position:"absolute",top:-999}}></Input>
-              <Input type="password" style={{position:"absolute",top:-999}}></Input>
+          <Row gutter={24} style={{ position: "relative" }}>
+            <Input type="text" name="userName" style={{ position: "absolute", top: -999 }}></Input>
+            <Input type="password" style={{ position: "absolute", top: -999 }}></Input>
             {Dom.map(
               (item, i) => {
                 let extraprops = getSelectLinked(item);
@@ -512,6 +522,31 @@ let InitForm = ({ fields, onChange, submitting, submitData, actions, col, mode, 
                             })
                           }
                         </Select>
+                      </Form.Item>
+                    </Col>
+                  ) : null;
+                } else if (item.type == 'cascader') {
+                  console.log(optiondom[item.name[0]])
+                  return !extraprops.hides ? (
+                    <Col key={i} {...getCol(item.col)}>
+                      <Form.Item
+                        style={{}}
+                        label={item.title}
+                        name={item.name[0]}
+                        rules={[
+                          { required: item.required, message: `请选择${item.title}` },
+                        ]}
+                      >
+                        <Cascader
+                          fieldNames={item.fieldNames}
+                          options={optiondom[item.name[0]]}
+                          placeholder="请选择"
+                          style={{ width: '100%' }}
+                          showSearch={{ filter }}
+                          bordered={mode == "simple" ? false : true}
+                          disabled={item.disabled}
+                          className={mode == "simple" ? "simple" : ""}
+                        />
                       </Form.Item>
                     </Col>
                   ) : null;
@@ -670,6 +705,7 @@ let InitForm = ({ fields, onChange, submitting, submitData, actions, col, mode, 
                     </Col>
                   ) : null;
                 } else if (item.type == 'treeselect') {
+                  let { title, key, children } = item.formart;
                   return !extraprops.hides ? (
                     <Col key={i} {...getCol(item.col)}>
                       <Form.Item
@@ -685,14 +721,13 @@ let InitForm = ({ fields, onChange, submitting, submitData, actions, col, mode, 
                           dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                           disabled={item.disabled}
                           allowClear
+                          showSearch
                           treeDefaultExpandAll
                           placeholder={`请选择...`}
                         >
-                          {options && loop(options)}
-
                           {
                             (optiondom[item.name[0]] && optiondom[item.name[0]].length > 0) &&
-                            loop(optiondom[item.name[0]])
+                            loop(optiondom[item.name[0]], title, key, children)
                           }
                         </TreeSelect>
                       </Form.Item>

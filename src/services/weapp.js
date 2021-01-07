@@ -76,6 +76,15 @@ export async function editkeyword(params) {
   });
 }
 
+//获取分类
+export async function getclassify(params) {
+  return request('/api/max_classify' + bodyParse(params));
+}
+
+//获取关键词
+export async function getkeyword(params) {
+  return request('/api/keyword' + bodyParse(params));
+}
 
 //创建大类
 export async function addmax_classify(params) {
@@ -125,7 +134,29 @@ export async function deletemin_classify(params) {
 
 
 
+//创建岗位
+export async function addjob(params) {
+  return request('/api/job', {
+    method: 'POST',
+    data: params,
+  });
+}
 
+//更新岗位
+export async function editjob(params) {
+  return request('/api/job/' + params.id, {
+    method: 'PUT',
+    data: params,
+  });
+}
+
+
+//删除岗位
+export async function deletejob(params) {
+  return request('/api/job/' + params, {
+    method: 'DELETE',
+  });
+}
 
 //当前用户信息
 export async function queryCurrent() {
