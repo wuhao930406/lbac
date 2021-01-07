@@ -49,7 +49,7 @@ function formartData(item, val) {
     let stepval = val ? Array.isArray(val) ? val : val.fileList : [];
     formartValue = stepval.map((it) => {
       if (it.response) {
-        return it.response.data.dataList[0]
+        return it.response.data
       } else {
         return it.url ? it.url : null
       }

@@ -60,6 +60,15 @@ export async function deleteuser(params) {
   });
 }
 
+//重置密码
+export async function resetuser(params) {
+  return request('/api/user/reset_password', {
+    method: 'PUT',
+    data: params,
+  });
+}
+
+
 //用户详情
 export async function getuser(params) {
   return request('/api/user/'+params);

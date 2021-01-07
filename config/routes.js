@@ -69,6 +69,21 @@ export default [
                     name: '工厂管理',
                     component: './Weapp/Factory',
                   },
+                  {
+                    path: '/weapp/keyword',
+                    name: '招聘岗位关键词',
+                    component: './Weapp/Keyword',
+                  },
+                  {
+                    path: '/weapp/classify',
+                    name: '招聘岗位分类',
+                    component: './Weapp/Classify',
+                  },
+                  {
+                    path: '/weapp/recruit',
+                    name: '招聘岗位管理',
+                    component: './Weapp/Recruit',
+                  },
                 ],
               },
               {

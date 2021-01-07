@@ -59,7 +59,7 @@ const BasicLayout = (props) => {
     window.dataconfig = {
       tableMethod:"GET",
       tableTokenkey:"Authorization",     
-      serverURL:""  
+      serverURL:"/api/file"  
     }
     if (dispatch) {
       dispatch({

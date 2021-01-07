@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Card, Switch, Button, Modal, message, Popconfirm, Input, Tag } from 'antd'
 import AutoTable from '@/components/AutoTable'
 import InitForm from '@/components/InitForm'
-import { setenable, role, store, getuser, deleteuser } from '@/services/basic'
+import { setenable, role, store, getuser, deleteuser,resetuser } from '@/services/basic'
 import { connect } from 'umi'
 
 // type 类型有 table treeselect upload inputnumber datepicker daterange radio select textarea autoinput editor password input 
@@ -185,6 +185,7 @@ function User(props) {
         {
             title: '操作',
             valueType: 'option',
+            width:160,
             render: (text, record, _, action) => [
                 <a
                     onClick={() => {
@@ -235,18 +236,18 @@ function User(props) {
                     placement="bottom"
                     title={"确认重置该用户密码？"}
                     onConfirm={() => {
-                        deleteuser(record.id).then(res => {
+                        resetuser({id:record.id}).then(res => {
                             if (res.code == 0) {
                                 message.success("操作成功");
                                 actionRef.current.reload();
                             }
                         })
                     }}
-                    okText="删除"
+                    okText="确定"
                     onCancel="取消"
                 >
                     <a style={{ color: "#f50" }}>
-                        删除
+                        重置密码
                     </a>
                 </Popconfirm>
             ],

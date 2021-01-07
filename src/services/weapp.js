@@ -60,6 +60,73 @@ export async function deletefactory(params) {
 
 
 
+//创建关键词
+export async function addkeyword(params) {
+  return request('/api/keyword', {
+    method: 'POST',
+    data: params,
+  });
+}
+
+//更新关键词
+export async function editkeyword(params) {
+  return request('/api/keyword/' + params.id, {
+    method: 'PUT',
+    data: params,
+  });
+}
+
+
+//创建大类
+export async function addmax_classify(params) {
+  return request('/api/max_classify', {
+    method: 'POST',
+    data: params,
+  });
+}
+
+//更新大类
+export async function editmax_classify(params) {
+  return request('/api/max_classify/' + params.id, {
+    method: 'PUT',
+    data: params,
+  });
+}
+
+//删除大类
+export async function deletemax_classify(params) {
+  return request('/api/max_classify/' + params, {
+    method: 'DELETE',
+  });
+}
+
+//创建小类
+export async function addmin_classify(params) {
+  return request('/api/min_classify', {
+    method: 'POST',
+    data: params,
+  });
+}
+
+//更新小类
+export async function editmin_classify(params) {
+  return request('/api/min_classify/' + params.id, {
+    method: 'PUT',
+    data: params,
+  });
+}
+
+//删除小类
+export async function deletemin_classify(params) {
+  return request('/api/min_classify/' + params, {
+    method: 'DELETE',
+  });
+}
+
+
+
+
+
 //当前用户信息
 export async function queryCurrent() {
   return request('/api/user/info');
