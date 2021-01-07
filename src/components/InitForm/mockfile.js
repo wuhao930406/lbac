@@ -11,6 +11,7 @@ export default function mockfile(datalist) {
       }
     };
   });
+  console.log(newdatalist)
   return {
     fileList: newdatalist,
   };

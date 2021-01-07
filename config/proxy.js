@@ -14,6 +14,13 @@ export default {
         '^/api': '',
       },
     },
+    '/oss/': {
+      target: 'http://49.235.82.163/oss',
+      changeOrigin: true,
+      pathRewrite: {
+        '^/oss': '',
+      },
+    },
   },
   test: {
     '/api/': {
@@ -23,6 +30,13 @@ export default {
         '^/api': '',
       },
     },
+    '/oss/': {
+      target: 'http://49.235.82.163/oss',
+      changeOrigin: true,
+      pathRewrite: {
+        '^/oss': '',
+      },
+    },
   },
   pre: {
     '/api/': {
@@ -30,6 +44,13 @@ export default {
       changeOrigin: true,
       pathRewrite: {
         '^': '',
+      },
+    },
+    '/oss/': {
+      target: 'http://49.235.82.163/oss',
+      changeOrigin: true,
+      pathRewrite: {
+        '^/oss': '',
       },
     },
   },
