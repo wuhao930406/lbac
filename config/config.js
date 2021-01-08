@@ -6,13 +6,14 @@ import routes from './routes';
 
 const { REACT_APP_ENV } = process.env;
 export default defineConfig({
+  outputPath: 'lbac',
   hash: true,
   antd: {},
   dva: {
     hmr: true,
   },
   history: {
-    type: 'browser',
+    type: 'hash',
   },
   locale: {
     // default zh-CN
@@ -37,9 +38,7 @@ export default defineConfig({
   title: false,
   ignoreMomentLocale: true,
   proxy: proxy[REACT_APP_ENV || 'dev'],
-  manifest: {
-    basePath: '/',
-  },
+  publicPath: './',
   esbuild: {},
   // https://github.com/zthxxx/react-dev-inspector
   plugins: ['react-dev-inspector/plugins/umi/react-inspector'],

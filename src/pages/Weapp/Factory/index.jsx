@@ -1,11 +1,11 @@
 import React, { useState, useRef } from 'react';
 import ReactDOM from 'react-dom';
-import { Card, Switch, Button, Modal, message, Popconfirm } from 'antd'
-import AutoTable from '@/components/AutoTable'
-import InitForm from '@/components/InitForm'
-import { deletefactory, role, factory } from '@/services/weapp'
-import { connect } from 'umi'
-
+import { Card, Switch, Button, Modal, message, Popconfirm } from 'antd';
+import AutoTable from '@/components/AutoTable';
+import InitForm from '@/components/InitForm';
+import { deletefactory, role, factory } from '@/services/weapp';
+import { connect } from 'umi';
+import RenderClickImg from '@/components/RenderClickImg'
 // type 类型有 table treeselect upload inputnumber datepicker daterange radio select textarea autoinput editor password input 
 
 let defaultFields = {
@@ -63,11 +63,15 @@ function Factory(props) {
             title: '工厂图片',
             dataIndex: 'factory_image',
             key: 'factory_image',
-            render:(_,record)=>{
-                return record.factory_image.map(it=>{
-                    console.log(it)
-                    return 1
-                })
+            render: (_, record) => {
+                return <div className="center">
+                    {
+                        record.factory_image.map((it,i) => {
+                            return <RenderClickImg key={i} url={it} style={{margin:"0 2px 2px 0"}}></RenderClickImg>   
+                        })
+                    }
+                </div>
+
             }
         },
         {
@@ -123,7 +127,7 @@ function Factory(props) {
                     okText="删除"
                     onCancel="取消"
                 >
-                    <a style={{color:"#f50"}}>
+                    <a style={{ color: "#f50" }}>
                         删除
                     </a>
                 </Popconfirm>

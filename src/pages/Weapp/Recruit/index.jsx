@@ -5,6 +5,7 @@ import AutoTable from '@/components/AutoTable'
 import InitForm from '@/components/InitForm'
 import { deletejob, getclassify, getkeyword, factory } from '@/services/weapp'
 import { connect } from 'umi'
+import RenderDetail from '@/components/RenderDetail';
 
 // type 类型有 table treeselect upload inputnumber datepicker daterange radio select textarea autoinput editor password input 
 
@@ -182,12 +183,13 @@ function Recruit(props) {
             key: 'subsidy',
             search: false,
         },
-        // {
-        //     title: '主分类',
-        //     dataIndex: 'max_classify_name',
-        //     key: 'max_classify_name',
-        //     search: false,
-        // },
+        {
+            title: '发布状态',
+            dataIndex: 'status',
+            key: 'status',
+            search: false,
+            render: (_, record) => <span>{record.status == "open" ? "发布" : "下架"}</span>
+        },
         // {
         //     title: '子分类',
         //     dataIndex: 'min_classify_name',
@@ -209,17 +211,41 @@ function Recruit(props) {
             title: '操作',
             valueType: 'option',
             render: (text, record, _, action) => [
+                <a onClick={() => {
+                    Modal.info({
+                        title: "岗位信息",
+                        width:1000,
+                        style:{top:20},
+                        content: <RenderDetail style={{paddingTop:8}} formart={[
+                            { "岗位名称": record.name },
+                            { "工厂名称": record.factory.name },
+                            { "工厂地址": record.factory.address },
+                            { "工厂联系方式": record.factory.contact },
+                            { "月薪": record.min_month_salary + " - " + record.max_month_salary + "元" },
+                            { "时薪": record.hour_salary + "元" },
+                            { "补贴": record.subsidy },
+                            { "分类": record.max_classify_name + (record.min_classify_name ? " / " + record.min_classify_name : " ") },
+                            { "关键词": <span className="centers">{record.keywords.map(it => { return <b style={{fontWeight:"normal",marginRight:8}}>{it.keyword_name}</b> })} </span> },
+                            { "发布状态": record.status == "open" ? "发布" : "下架" },
+                            { "福利": record.welfare },
+                            { "招聘条件": record.condition },
+                            { "岗位介绍": record.job_description },
+                        ]} />
+                    })
+                }}>
+                    查看详情
+                </a>,
                 <a
                     onClick={() => {
                         cvs(true);
                         cf(fields => {
                             for (let i in fields) {
                                 fields[i].value = record[i];
-                                if(i=="classify"){
-                                    fields[i].value = [record.max_classify_id,record.min_classify_id] 
+                                if (i == "classify") {
+                                    fields[i].value = [record.max_classify_id, record.min_classify_id]
                                 }
                                 if (i == "keyword_ids") {
-                                    fields[i].value = record.keywords && record.keywords.map((it)=>it.keyword_id);
+                                    fields[i].value = record.keywords && record.keywords.map((it) => it.keyword_id);
                                 }
                             }
                             return { ...fields }

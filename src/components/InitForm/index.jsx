@@ -107,11 +107,13 @@ let InitForm = ({ fields, onChange, submitting, submitData, actions, col, mode, 
       }
       //初始化filelist
       if (record.type === "upload") {
-        let item = record,
-          curfileList = item.value ? item.value.fileList ? item.value.fileList : item.value : [];
-        defaultfiles[i] = curfileList;
+        let curfileList = record.value ? mockfile(Array.isArray(record.value) ? record.value : [record.value]) : [];
+        //default value
+        defaultfiles[i] = curfileList ? curfileList.fileList ? curfileList.fileList : [] : [];
         //formart value
-        record.value = record.value ? mockfile(Array.isArray(record.value) ? record.value : [record.value]) : [];
+        record.value = curfileList;
+
+
 
       } else if (record.type === "datepicker") {
         record.value = record.value ? moment(record.value) : undefined;
@@ -644,24 +646,53 @@ let InitForm = ({ fields, onChange, submitting, submitData, actions, col, mode, 
                     </Col>
                   ) : null;
                 } else if (item.type == 'upload') {
+                  function beforeUpload(file) {
+                    let size = window?.dataconfig?.limitSize ? window.dataconfig.serverURL : 20;
+                    const isJpgOrPng = file.type === 'image/jpg' || file.type === 'image/jpeg' || file.type === 'image/png';
+                    if (!isJpgOrPng) {
+                      message.error('只能上传.jpg/.jpeg/.png图片!');
+                    }
+                    const isLt2M = file.size / 1024 / 1024 < size;
+                    if (!isLt2M) {
+                      message.error('图片大小须小于' + size + 'MB!');
+                    }
+                    if (item.listType == "img") {
+                      return isJpgOrPng && isLt2M;
+                    } else {
+                      return true
+                    }
+                  }
+
                   const props = {
                     name: "file",
                     action: item.serverURL ? item.serverURL : window?.dataconfig?.serverURL,
                     listType: item.listType == "img" ? "picture-card" : 'text',
+                    accept: item.listType == "img" ? ".jpg,.png,.jpeg," : "*",
                     multiple: item.multiple ? item.multiple : false,
-                    defaultFileList: item.value ? item.value.fileList ? item.value.fileList : [] : [],
+                    beforeUpload: beforeUpload,
+                    fileList: filelist[item.name[0]],
                     onChange(info) {
                       let {
                         file: { name, status, response },
                         fileList,
                       } = info;
-                      if (status == 'done') {
+                      if (status == 'uploading') {
                         cfilelist({
                           ...filelist,
                           [item.name[0]]: fileList
                         })
+                      } else if (status == 'done' || status == 'removed') {
+                        cfilelist({
+                          ...filelist,
+                          [item.name[0]]: fileList.filter((it) => it.response)
+                        })
                       } else if (status == 'error') {
                         message.error(`${info.file.name} 上传失败`);
+                      } else {
+                        cfilelist({
+                          ...filelist,
+                          [item.name[0]]: fileList.filter((it) => it.response)
+                        })
                       }
                     },
                     onPreview(file) {
@@ -671,7 +702,7 @@ let InitForm = ({ fields, onChange, submitting, submitData, actions, col, mode, 
                         setcururl(file.thumbUrl)
                       }
                       setVisible(true);
-                    }
+                    },
                   };
                   const uploadBtn =
                     item.listType == 'img' ? (
