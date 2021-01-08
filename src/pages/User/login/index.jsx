@@ -83,10 +83,7 @@ const Login = (props) => {
                 size: 'large',
                 prefix: <UserOutlined className={styles.prefixIcon} />,
               }}
-              placeholder={intl.formatMessage({
-                id: 'pages.login.username.placeholder',
-                defaultMessage: '用户名: admin or user',
-              })}
+              placeholder={"请输入用户名"}
               rules={[
                 {
                   required: true,
@@ -105,10 +102,7 @@ const Login = (props) => {
                 size: 'large',
                 prefix: <LockTwoTone className={styles.prefixIcon} />,
               }}
-              placeholder={intl.formatMessage({
-                id: 'pages.login.password.placeholder',
-                defaultMessage: '密码: ant.design',
-              })}
+              placeholder={"请输入密码"}
               rules={[
                 {
                   required: true,
