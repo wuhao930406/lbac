@@ -210,6 +210,7 @@ function Recruit(props) {
         {
             title: '操作',
             valueType: 'option',
+            width:170,
             render: (text, record, _, action) => [
                 <a onClick={() => {
                     Modal.info({
