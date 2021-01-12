@@ -82,7 +82,7 @@ class AutoTable extends PureComponent {
           showTotal: (total, range) => <span>共{total}条</span>,
           showQuickJumper: false,
           showSizeChanger: false,
-          pageSize: defaultPageSize ? defaultPageSize : 15,
+          pageSize: defaultPageSize ? defaultPageSize : 10,
           pageSizeOptions: [10, 15, 30, 50, 100, 200],
           total: dataSource.length
         },
@@ -135,7 +135,7 @@ class AutoTable extends PureComponent {
           showTotal: (total, range) => <span>共{total}条</span>,
           showQuickJumper: showQuickJumper === false ? true : false,
           showSizeChanger: showSizeChanger === false ? true : false,
-          pageSize: defaultPageSize ? defaultPageSize : 15,
+          pageSize: defaultPageSize ? defaultPageSize : 10,
           pageSizeOptions: [5, 10, 15, 30, 50, 100, 200],
           total
         },
