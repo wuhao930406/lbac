@@ -1,4 +1,13 @@
-import { addstore, editstore, addfactory, editfactory, addkeyword, editkeyword, addmax_classify, editmax_classify, addjob, editjob, addmin_classify, editmin_classify } from '@/services/weapp';
+import {
+  addstore, editstore,
+  addfactory, editfactory,
+  addkeyword, editkeyword,
+  addmax_classify, editmax_classify,
+  addjob, editjob,
+  addmin_classify, editmin_classify,
+  addcustomer, editcustomer,
+
+} from '@/services/weapp';
 
 const UserModel = {
   namespace: 'weapp',
@@ -44,6 +53,14 @@ const UserModel = {
     },
     *editmin_classify({ payload }, { call, put }) {
       const response = yield call(editmin_classify, payload);
+      return response
+    },
+    *addcustomer({ payload }, { call, put }) {
+      const response = yield call(addcustomer, payload);
+      return response
+    },
+    *editcustomer({ payload }, { call, put }) {
+      const response = yield call(editcustomer, payload);
       return response
     },
     *addjob({ payload }, { call, put }) {

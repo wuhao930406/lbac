@@ -60,6 +60,11 @@ export default [
                 icon: 'wechat',
                 routes: [
                   {
+                    path: '/weapp/customer',
+                    name: '客服管理',
+                    component: './Weapp/Customer',
+                  },
+                  {
                     path: '/weapp/store',
                     name: '门店管理',
                     component: './Weapp/Store',

@@ -108,7 +108,6 @@ export async function deletemax_classify(params) {
     method: 'DELETE',
   });
 }
-
 //创建小类
 export async function addmin_classify(params) {
   return request('/api/min_classify', {
@@ -128,6 +127,29 @@ export async function editmin_classify(params) {
 //删除小类
 export async function deletemin_classify(params) {
   return request('/api/min_classify/' + params, {
+    method: 'DELETE',
+  });
+}
+
+//创建客服
+export async function addcustomer(params) {
+  return request('/api/customer', {
+    method: 'POST',
+    data: params,
+  });
+}
+
+//更新客服
+export async function editcustomer(params) {
+  return request('/api/customer/' + params.id, {
+    method: 'PUT',
+    data: params,
+  });
+}
+
+//删除客服
+export async function deletecustomer(params) {
+  return request('/api/customer/' + params, {
     method: 'DELETE',
   });
 }
