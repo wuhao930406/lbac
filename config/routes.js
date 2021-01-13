@@ -89,6 +89,11 @@ export default [
                     name: '招聘岗位管理',
                     component: './Weapp/Recruit',
                   },
+                  {
+                    path: '/weapp/enroll',
+                    name: '报名信息管理',
+                    component: './Weapp/Enroll',
+                  },
                 ],
               },
               {

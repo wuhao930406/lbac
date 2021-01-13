@@ -6,7 +6,7 @@ import {
   addjob, editjob,
   addmin_classify, editmin_classify,
   addcustomer, editcustomer,
-
+  enrollverify,enrollquit,enrollset_working
 } from '@/services/weapp';
 
 const UserModel = {
@@ -71,7 +71,18 @@ const UserModel = {
       const response = yield call(editjob, payload);
       return response
     },
-
+   *enrollverify({ payload }, { call, put }) {
+      const response = yield call(enrollverify, payload);
+      return response
+    },
+   *enrollquit({ payload }, { call, put }) {
+      const response = yield call(enrollquit, payload);
+      return response
+    },
+   *enrollset_working({ payload }, { call, put }) {
+      const response = yield call(enrollset_working, payload);
+      return response
+    },
 
   },
   reducers: {

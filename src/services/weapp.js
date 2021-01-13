@@ -81,6 +81,7 @@ export async function getclassify(params) {
   return request('/api/max_classify' + bodyParse(params));
 }
 
+
 //获取关键词
 export async function getkeyword(params) {
   return request('/api/keyword' + bodyParse(params));
@@ -172,12 +173,41 @@ export async function editjob(params) {
   });
 }
 
+//审核
+export async function enrollverify(params) {
+  return request('/api/enroll/verify', {
+    method: 'PUT',
+    data: params,
+  });
+}
+
+
+//入职
+export async function enrollset_working(params) {
+  return request('/api/enroll/set_working', {
+    method: 'PUT',
+    data: params,
+  });
+}
+
+//离职
+export async function enrollquit(params) {
+  return request('/api/enroll/quit', {
+    method: 'PUT',
+    data: params,
+  });
+}
 
 //删除岗位
 export async function deletejob(params) {
   return request('/api/job/' + params, {
     method: 'DELETE',
   });
+}
+
+//获取工作详情
+export async function getjob(params) {
+  return request('/api/job/' + params);
 }
 
 //当前用户信息
