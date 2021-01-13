@@ -16,6 +16,13 @@ let defaultFields = {
         name: ['name'],
         required: true,
     },
+    tel: {
+        value: null,
+        type: 'input',
+        title: '电话',
+        name: ['tel'],
+        required: true,
+    },
     address: {
         value: null,
         type: 'textarea',
@@ -42,6 +49,12 @@ function Store(props) {
             title: '地址',
             dataIndex: 'address',
             key: 'address',
+            search: false,
+        },
+        {
+            title: '电话',
+            dataIndex: 'tel',
+            key: 'tel',
             search: false,
         },
         {
