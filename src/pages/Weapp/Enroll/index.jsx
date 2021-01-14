@@ -95,7 +95,7 @@ function Enroll(props) {
             dataIndex: 'approved_time',
             key: 'approved_time',
             search: false,
-            render: (_, record) => record.approved_time ? moment(record.approved_time).format("YYYY-MM-DD HH:mm:ss") : "_"
+            render: (_, record) => record.approved_time ? (record.approved_time).format("YYYY-MM-DD HH:mm:ss") : "_"
         },
         {
             title: '报名审核不通过时间',

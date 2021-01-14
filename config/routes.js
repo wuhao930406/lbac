@@ -75,6 +75,12 @@ export default [
                     component: './Weapp/Factory',
                   },
                   {
+                    path: '/weapp/train',
+                    name: '车次管理',
+                    component: './Weapp/Train',
+                  },
+
+                  {
                     path: '/weapp/keyword',
                     name: '招聘岗位关键词',
                     component: './Weapp/Keyword',

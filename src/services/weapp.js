@@ -131,7 +131,6 @@ export async function deletemin_classify(params) {
     method: 'DELETE',
   });
 }
-
 //创建客服
 export async function addcustomer(params) {
   return request('/api/customer', {
@@ -151,6 +150,30 @@ export async function editcustomer(params) {
 //删除客服
 export async function deletecustomer(params) {
   return request('/api/customer/' + params, {
+    method: 'DELETE',
+  });
+}
+
+
+//创建班次
+export async function addtrain(params) {
+  return request('/api/train', {
+    method: 'POST',
+    data: params,
+  });
+}
+
+//更新班次
+export async function edittrain(params) {
+  return request('/api/train/' + params.id, {
+    method: 'PUT',
+    data: params,
+  });
+}
+
+//删除班次
+export async function deletetrain(params) {
+  return request('/api/train/' + params, {
     method: 'DELETE',
   });
 }

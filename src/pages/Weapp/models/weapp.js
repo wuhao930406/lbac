@@ -5,6 +5,7 @@ import {
   addmax_classify, editmax_classify,
   addjob, editjob,
   addmin_classify, editmin_classify,
+  addtrain, edittrain,
   addcustomer, editcustomer,
   enrollverify,enrollquit,enrollset_working
 } from '@/services/weapp';
@@ -61,6 +62,14 @@ const UserModel = {
     },
     *editcustomer({ payload }, { call, put }) {
       const response = yield call(editcustomer, payload);
+      return response
+    },
+    *addtrain({ payload }, { call, put }) {
+      const response = yield call(addtrain, payload);
+      return response
+    },
+    *edittrain({ payload }, { call, put }) {
+      const response = yield call(edittrain, payload);
       return response
     },
     *addjob({ payload }, { call, put }) {
