@@ -11,6 +11,14 @@ import moment from 'moment';
 // type 类型有 table treeselect upload inputnumber datepicker daterange radio select textarea autoinput editor password input 
 
 let defaultFields = {
+    name: {
+        value: null,
+        type: 'input',
+        title: '班车简称',
+        name: ['name'],
+        required: true,
+        col: { span: 24 },//栅格布局 默认 12
+    },
     start_station: {
         value: null,
         type: 'input',
@@ -32,8 +40,8 @@ let defaultFields = {
         type: 'datepicker',
         title: '出发时间',
         name: ['start_time'],
-        format:"YYYY-MM-DD HH:mm:ss",
-        showTime:true,
+        format: "YYYY-MM-DD HH:mm:ss",
+        showTime: true,
         required: true,
         col: { span: 24 },//栅格布局 默认 12
     },
@@ -51,7 +59,7 @@ let defaultFields = {
         title: '核载人数',
         name: ['max_people'],
         required: true,
-        min:0,
+        min: 0,
         col: { span: 24 },//栅格布局 默认 12
     },
 }
@@ -64,9 +72,15 @@ function Train(props) {
     const actionRef = useRef();
     const columns = [
         {
+            title: '班车简称',
+            dataIndex: 'name',
+            key: 'name',
+        },
+        {
             title: '出发地',
             dataIndex: 'start_station',
             key: 'start_station',
+            search: false,
         },
         {
             title: '目的地',
@@ -212,7 +226,7 @@ function Train(props) {
                         //联动操作
                     }}
                     submitting={
-                        props.loading.effects['weapp/edittrain'] ||  props.loading.effects['weapp/addtrain'] || !vs
+                        props.loading.effects['weapp/edittrain'] || props.loading.effects['weapp/addtrain'] || !vs
                     }
                 >
                 </InitForm>
