@@ -154,6 +154,29 @@ export async function deletecustomer(params) {
   });
 }
 
+//创建banner
+export async function addbanner(params) {
+  return request('/api/banner', {
+    method: 'POST',
+    data: params,
+  });
+}
+
+//更新banner
+export async function editbanner(params) {
+  return request('/api/banner/' + params.id, {
+    method: 'PUT',
+    data: params,
+  });
+}
+
+//删除banner
+export async function deletebanner(params) {
+  return request('/api/banner/' + params, {
+    method: 'DELETE',
+  });
+}
+
 
 //创建班次
 export async function addtrain(params) {
@@ -178,7 +201,12 @@ export async function deletetrain(params) {
   });
 }
 
-
+//删除班次
+export async function deletetrainrecord(params) {
+  return request('/api/train_record/' + params, {
+    method: 'DELETE',
+  });
+}
 
 //创建岗位
 export async function addjob(params) {
@@ -231,6 +259,28 @@ export async function deletejob(params) {
 //获取工作详情
 export async function getjob(params) {
   return request('/api/job/' + params);
+}
+
+//岗位列表
+export async function joblist(params) {
+  return request('/api/job' + bodyParse(params));
+}
+
+
+//全部站点
+export async function stations() {
+  return request('/api/train/stations');
+}
+
+//全部站点
+export async function member(params) {
+  return request('/api/member/'+params);
+}
+
+
+//全部站点
+export async function attention(params) {
+  return request('/api/member/attention');
 }
 
 //当前用户信息

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Card, Switch, Button, Modal, message, Popconfirm,Tag } from 'antd'
 import AutoTable from '@/components/AutoTable'
 import InitForm from '@/components/InitForm'
-import { deletetrain, role, train, stations } from '@/services/weapp'
+import { deletetrainrecord, } from '@/services/weapp'
 import { connect } from 'umi'
 import moment from 'moment';
 
@@ -12,127 +12,60 @@ import moment from 'moment';
 
 
 
-function Train(props) {
+function Trainrecord(props) {
     const { weapp: { stations }, dispatch } = props;
     const [vs, cvs] = useState(false),//表单显/隐
-        [fields, cf] = useState({
-            name: {
-                value: null,
-                type: 'input',
-                title: '班车简称',
-                name: ['name'],
-                required: true,
-                col: { span: 24 },//栅格布局 默认 12
-            },
-            start_station: {
-                value: undefined,
-                type: 'autoinput',
-                title: '出发地',
-                name: ['start_station'],
-                required: true,
-                col: { span: 24 },//栅格布局 默认 12
-                options: stations
-            },
-            end_station: {
-                value: undefined,
-                type: 'autoinput',
-                title: '目的地',
-                name: ['end_station'],
-                required: true,
-                col: { span: 24 },//栅格布局 默认 12
-                options: stations
-            },
-            start_time: {
-                value: null,
-                type: 'datepicker',
-                title: '出发时间',
-                name: ['start_time'],
-                format: "YYYY-MM-DD HH:mm:ss",
-                showTime: true,
-                required: true,
-                col: { span: 24 },//栅格布局 默认 12
-            },
-            start_place: {
-                value: null,
-                type: 'input',
-                title: '出发地址',
-                name: ['start_place'],
-                required: true,
-                col: { span: 24 },//栅格布局 默认 12
-            },
-            max_people: {
-                value: null,
-                type: 'inputnumber',
-                title: '核载人数',
-                name: ['max_people'],
-                required: true,
-                min: 0,
-                col: { span: 24 },//栅格布局 默认 12
-            },
-        }),
+        [fields, cf] = useState(),
         [iftype, ciftype] = useState({});
     const actionRef = useRef();
     const columns = [
         {
-            title: '班车简称',
+            title: '姓名',
             dataIndex: 'name',
             key: 'name',
         },
         {
-            title: '出发地',
-            dataIndex: 'start_station',
-            key: 'start_station',
+            title: '手机号',
+            dataIndex: 'phone',
+            key: 'phone',
             search: false,
         },
         {
-            title: '目的地',
-            dataIndex: 'end_station',
-            key: 'end_station',
+            title: '乘车状态',
+            dataIndex: 'status',
+            key: 'status',
             search: false,
+            render(_,record){
+                return <Tag color={record.status!=='waiting'?"grey":"green"}>{record.status!=='waiting'?"已发车":"未发车"}</Tag>
+            }
         },
         {
             title: '出发时间',
             dataIndex: 'start_time',
             key: 'start_time',
             search: false,
-            render: (_, record) => record.start_time ? moment(record.start_time).format("YYYY-MM-DD HH:mm:ss") : "_"
-
+            render: (_, record) => record.train.start_time ? moment(record.train.start_time).format("YYYY-MM-DD HH:mm") : "_"
         },
         {
             title: '出发地点',
             dataIndex: 'start_place',
             key: 'start_place',
             search: false,
+            render: (_, record) => record.train.start_place
         },
         {
             title: '核载人数',
             dataIndex: 'max_people',
             key: 'max_people',
             search: false,
-        },
-        {
-            title: '已有人数',
-            dataIndex: 'max_people',
-            key: 'max_people',
-            search: false,
-            render(_,record){
-                return <a href="">{record.max_people}</a>
-            }
-        },
-        {
-            title: '状态',
-            dataIndex: 'is_expire',
-            key: 'is_expire',
-            search: false,
-            render:(_,record)=>{
-                return <Tag color={record.is_expire?"grey":"green"}>{record.is_expire?"已发车":"未发车"}</Tag>
-            }
+            render: (_, record) => record.train.max_people
         },
         {
             title: '操作',
             valueType: 'option',
             render: (text, record, _, action) => [
                 <a
+                    disabled={record.status!=='waiting'} style={{ color:record.status!=='waiting'?"#999": "#1890ff" }}
                     onClick={() => {
                         cvs(true);
                         cf(fields => {
@@ -154,7 +87,7 @@ function Train(props) {
                     placement="bottom"
                     title={"确认删除该车次？"}
                     onConfirm={() => {
-                        deletetrain(record.id).then(res => {
+                        deletetrainrecord(record.id).then(res => {
                             if (res.code == 0) {
                                 message.success("操作成功");
                                 actionRef.current.reload();
@@ -164,7 +97,7 @@ function Train(props) {
                     okText="删除"
                     onCancel="取消"
                 >
-                    <a style={{ color: "#f50" }}>
+                    <a disabled={record.status!=='waiting'} style={{ color:record.status!=='waiting'?"#999": "#f50" }}>
                         删除
                     </a>
                 </Popconfirm>
@@ -208,7 +141,7 @@ function Train(props) {
     let saveData = (values) => {
         if (iftype.val == "add") {
             dispatch({
-                type: 'weapp/addtrain',
+                type: 'weapp/addtrainrecord',
                 payload: values
             }).then(res => {
                 if (res.code == 0) {
@@ -219,7 +152,7 @@ function Train(props) {
             })
         } else if (iftype.val == "edit") {
             dispatch({
-                type: 'weapp/edittrain',
+                type: 'weapp/edittrainrecord',
                 payload: { ...values, id: iftype.id }
             }).then(res => {
                 if (res.code == 0) {
@@ -232,12 +165,11 @@ function Train(props) {
     }
 
     return (
-        <Card title={props.route.name} extra={extrarender}>
+        <Card title={props.route.name}>
             <AutoTable
                 columns={columns}
                 actionRef={actionRef}
-                path="/api/train"
-                pagination={"false"}
+                path="/api/train_record"
             ></AutoTable>
 
             <Modal
@@ -259,7 +191,7 @@ function Train(props) {
                         //联动操作
                     }}
                     submitting={
-                        props.loading.effects['weapp/edittrain'] || props.loading.effects['weapp/addtrain'] || !vs
+                        props.loading.effects['weapp/edittrainrecord'] || props.loading.effects['weapp/addtrainrecord'] || !vs
                     }
                 >
                 </InitForm>
@@ -274,4 +206,4 @@ function Train(props) {
 export default connect(({ weapp, loading }) => ({
     weapp,
     loading,
-}))(Train)
+}))(Trainrecord)

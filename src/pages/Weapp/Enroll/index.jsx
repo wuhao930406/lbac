@@ -137,7 +137,7 @@ function Enroll(props) {
                 </a>,
                 <Popconfirm
                     placement="bottom"
-                    title={"确认把他办理入职手续？"}
+                    title={"确认给他办理入职手续？"}
                     onConfirm={() => {
                         enrollset_working({ id: record.id }).then(res => {
                             if (res.code == 0) {

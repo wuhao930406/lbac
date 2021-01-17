@@ -60,10 +60,16 @@ export default [
                 icon: 'wechat',
                 routes: [
                   {
+                    path: '/weapp/member',
+                    name: '会员管理',
+                    component: './Weapp/Member',
+                  },
+                  {
                     path: '/weapp/customer',
                     name: '客服管理',
                     component: './Weapp/Customer',
                   },
+                  
                   {
                     path: '/weapp/store',
                     name: '门店管理',
@@ -78,6 +84,11 @@ export default [
                     path: '/weapp/train',
                     name: '车次管理',
                     component: './Weapp/Train',
+                  },
+                  {
+                    path: '/weapp/trainrecord',
+                    name: '乘客管理',
+                    component: './Weapp/Trainrecord',
                   },
 
                   {
@@ -99,6 +110,11 @@ export default [
                     path: '/weapp/enroll',
                     name: '报名信息管理',
                     component: './Weapp/Enroll',
+                  },
+                  {
+                    path: '/weapp/banner',
+                    name: '公众号轮播图',
+                    component: './Weapp/Banner',
                   },
                 ],
               },

@@ -4,8 +4,7 @@ import React from 'react';
 
 export default ({ url, size, style={} }) => {
   const [visible, setVisible] = useState(false);
-  let { preview_url,origin_url } = url
-    
+  let { preview_url,origin_url } = url?url:{};
 
   return (
     <div style={style}>

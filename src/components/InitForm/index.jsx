@@ -454,8 +454,9 @@ let InitForm = ({ fields, onChange, submitting, submitData, actions, col, mode, 
                       >
                         <AutoComplete
                           allowClear
+                          placeholder={item.title}
                           disabled={item.disabled}
-                          options={item.dataSource}
+                          options={(optiondom[item.name[0]] && optiondom[item.name[0]].length > 0)&&optiondom[item.name[0]]}
                           bordered={mode == "simple" ? false : true}
                           className={mode == "simple" ? "simple" : ""}
                           filterOption={(inputValue, option) => {
