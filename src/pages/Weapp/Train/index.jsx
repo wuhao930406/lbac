@@ -1,12 +1,12 @@
 import React, { useState, useRef, useMemo } from 'react';
 import ReactDOM from 'react-dom';
-import { Card, Switch, Button, Modal, message, Popconfirm,Tag } from 'antd'
+import { Card, Drawer, Button, Modal, message, Popconfirm, Tag } from 'antd'
 import AutoTable from '@/components/AutoTable'
 import InitForm from '@/components/InitForm'
 import { deletetrain, role, train, stations } from '@/services/weapp'
-import { connect } from 'umi'
+import { connect, history } from 'umi'
 import moment from 'moment';
-
+import Trainrecord from '../Trainrecord'
 
 // type 类型有 table treeselect upload inputnumber datepicker daterange radio select textarea autoinput editor password input 
 
@@ -50,6 +50,9 @@ function Train(props) {
                 format: "YYYY-MM-DD HH:mm:ss",
                 showTime: true,
                 required: true,
+                disabledDate:(current)=>{
+                    return current && current < moment().add('day',-1).endOf('day');
+                },
                 col: { span: 24 },//栅格布局 默认 12
             },
             start_place: {
@@ -70,32 +73,42 @@ function Train(props) {
                 col: { span: 24 },//栅格布局 默认 12
             },
         }),
+        [visible, setVisible] = useState(false),
         [iftype, ciftype] = useState({});
+
+
     const actionRef = useRef();
     const columns = [
         {
             title: '班车简称',
             dataIndex: 'name',
             key: 'name',
+            search: false,
         },
         {
             title: '出发地',
             dataIndex: 'start_station',
             key: 'start_station',
-            search: false,
+            valueType: "select",
+            request: async () => {
+                return stations
+            }
         },
         {
             title: '目的地',
             dataIndex: 'end_station',
             key: 'end_station',
-            search: false,
+            valueType: "select",
+            request: async () => {
+                return stations
+            }
         },
         {
             title: '出发时间',
             dataIndex: 'start_time',
             key: 'start_time',
-            search: false,
-            render: (_, record) => record.start_time ? moment(record.start_time).format("YYYY-MM-DD HH:mm:ss") : "_"
+            render: (_, record) => record.start_time ? moment(record.start_time).format("YYYY-MM-DD HH:mm:ss") : "_",
+            valueType:"dateRange",
 
         },
         {
@@ -112,11 +125,18 @@ function Train(props) {
         },
         {
             title: '已有人数',
-            dataIndex: 'max_people',
-            key: 'max_people',
+            dataIndex: 'num',
+            key: 'num',
             search: false,
-            render(_,record){
-                return <a href="">{record.max_people}</a>
+            render(_, record) {
+                return <a onClick={() => {
+                    setVisible(true);
+                    ciftype({
+                        ...iftype,
+                        id: record.id,
+
+                    })
+                }}>{record.num}</a>
             }
         },
         {
@@ -124,8 +144,8 @@ function Train(props) {
             dataIndex: 'is_expire',
             key: 'is_expire',
             search: false,
-            render:(_,record)=>{
-                return <Tag color={record.is_expire?"grey":"green"}>{record.is_expire?"已发车":"未发车"}</Tag>
+            render: (_, record) => {
+                return <Tag color={record.is_expire ? "grey" : "green"}>{record.is_expire ? "已发车" : "未发车"}</Tag>
             }
         },
         {
@@ -237,8 +257,20 @@ function Train(props) {
                 columns={columns}
                 actionRef={actionRef}
                 path="/api/train"
-                pagination={"false"}
             ></AutoTable>
+            <Drawer
+                title="预览"
+                placement="top"
+                closable={true}
+                onClose={() => { setVisible(false) }}
+                visible={visible}
+                height="100%"
+            >
+                <div style={{ marginTop: -8 }}>
+                    <Trainrecord {...props} id={iftype.id}></Trainrecord>
+                </div>
+            </Drawer>
+
 
             <Modal
                 maskClosable={false}
@@ -263,8 +295,6 @@ function Train(props) {
                     }
                 >
                 </InitForm>
-
-
             </Modal>
 
         </Card>

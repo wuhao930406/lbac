@@ -1,6 +1,6 @@
 import React, { useState, useRef, useMemo } from 'react';
 import ReactDOM from 'react-dom';
-import { Card, Switch, Button, Modal, message, Popconfirm,Tag } from 'antd'
+import { Card, Switch, Button, Modal, message, Popconfirm, Tag } from 'antd'
 import AutoTable from '@/components/AutoTable'
 import InitForm from '@/components/InitForm'
 import { deletetrainrecord, } from '@/services/weapp'
@@ -13,10 +13,6 @@ import moment from 'moment';
 
 
 function Trainrecord(props) {
-    const { weapp: { stations }, dispatch } = props;
-    const [vs, cvs] = useState(false),//表单显/隐
-        [fields, cf] = useState(),
-        [iftype, ciftype] = useState({});
     const actionRef = useRef();
     const columns = [
         {
@@ -35,8 +31,8 @@ function Trainrecord(props) {
             dataIndex: 'status',
             key: 'status',
             search: false,
-            render(_,record){
-                return <Tag color={record.status!=='waiting'?"grey":"green"}>{record.status!=='waiting'?"已发车":"未发车"}</Tag>
+            render(_, record) {
+                return <Tag color={record.status !== 'waiting' ? "grey" : "green"}>{record.status !== 'waiting' ? "已发车" : "未发车"}</Tag>
             }
         },
         {
@@ -64,25 +60,6 @@ function Trainrecord(props) {
             title: '操作',
             valueType: 'option',
             render: (text, record, _, action) => [
-                <a
-                    disabled={record.status!=='waiting'} style={{ color:record.status!=='waiting'?"#999": "#1890ff" }}
-                    onClick={() => {
-                        cvs(true);
-                        cf(fields => {
-                            for (let i in fields) {
-                                fields[i].value = record[i];
-                            }
-                            return { ...fields }
-                        });
-                        ciftype({
-                            val: "edit",
-                            title: "编辑车次",
-                            id: record.id
-                        })
-                    }}
-                >
-                    编辑
-                </a>,
                 <Popconfirm
                     placement="bottom"
                     title={"确认删除该车次？"}
@@ -97,7 +74,7 @@ function Trainrecord(props) {
                     okText="删除"
                     onCancel="取消"
                 >
-                    <a disabled={record.status!=='waiting'} style={{ color:record.status!=='waiting'?"#999": "#f50" }}>
+                    <a disabled={record.status !== 'waiting'} style={{ color: record.status !== 'waiting' ? "#999" : "#f50" }}>
                         删除
                     </a>
                 </Popconfirm>
@@ -107,99 +84,13 @@ function Trainrecord(props) {
         },
     ]
 
-    useMemo(() => {
-        dispatch({
-            type: 'weapp/stations',
-        })
-    }, [vs])
-
-
-    let extrarender = (<div>
-        <Button size={"middle"} type="primary" onClick={() => {
-            cvs(true);
-            cf(fields => {
-                for (let i in fields) {
-                    fields[i].value = undefined;
-                    if (i == "end_station" || i == "start_station") {
-                        fields[i].options = props.weapp.stations;
-                    }
-                }
-                return { ...fields }
-            });
-            ciftype({
-                val: "add",
-                title: "新增车次"
-            })
-        }}>新增</Button>
-    </div>)
-
-
-
-
-
-
-    let saveData = (values) => {
-        if (iftype.val == "add") {
-            dispatch({
-                type: 'weapp/addtrainrecord',
-                payload: values
-            }).then(res => {
-                if (res.code == 0) {
-                    message.success("操作成功");
-                    actionRef.current.reload();
-                    cvs(false)
-                }
-            })
-        } else if (iftype.val == "edit") {
-            dispatch({
-                type: 'weapp/edittrainrecord',
-                payload: { ...values, id: iftype.id }
-            }).then(res => {
-                if (res.code == 0) {
-                    message.success("操作成功");
-                    actionRef.current.reload();
-                    cvs(false)
-                }
-            })
-        }
-    }
-
     return (
-        <Card title={props.route.name}>
-            <AutoTable
-                columns={columns}
-                actionRef={actionRef}
-                path="/api/train_record"
-            ></AutoTable>
-
-            <Modal
-                maskClosable={false}
-                title={iftype.title}
-                visible={vs}
-                onCancel={() => cvs(false)}
-                footer={false}
-                width={1000}
-                style={{ top: 20 }}
-                destroyOnClose={true}
-            >
-                <InitForm
-                    fields={fields}
-                    submitData={(values) => {
-                        saveData(values)
-                    }}
-                    onChange={(changedValues, allValues) => {
-                        //联动操作
-                    }}
-                    submitting={
-                        props.loading.effects['weapp/edittrainrecord'] || props.loading.effects['weapp/addtrainrecord'] || !vs
-                    }
-                >
-                </InitForm>
-
-
-            </Modal>
-
-        </Card>
+        <AutoTable
+            columns={columns}
+            actionRef={actionRef}
+            extraparams={{train_id:props.id}}
+            path="/api/train_record"
+        ></AutoTable>
     )
 }
 

@@ -249,6 +249,7 @@ export async function enrollquit(params) {
   });
 }
 
+
 //删除岗位
 export async function deletejob(params) {
   return request('/api/job/' + params, {
@@ -272,13 +273,19 @@ export async function stations() {
   return request('/api/train/stations');
 }
 
-//全部站点
+//会员
 export async function member(params) {
   return request('/api/member/'+params);
 }
 
-
-//全部站点
+//修改会员信息
+export async function updatemember(params) {
+  return request('/api/member/' + params.id, {
+    method: 'PUT',
+    data: params,
+  });
+}
+//全部会员人数
 export async function attention(params) {
   return request('/api/member/attention');
 }

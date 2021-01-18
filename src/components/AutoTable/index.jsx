@@ -115,6 +115,13 @@ class AutoTable extends PureComponent {
             delete newparams.pageIndex;
             delete newparams.pageSize;
           }
+          
+          if(newparams.start_time){
+            newparams.start_date = newparams.start_time[0]
+            newparams.end_date = newparams.start_time[1]
+          }
+
+
           if (tableMethod == "GET") {
             return request(path + bodyParse(newparams), {
               headers,

@@ -86,12 +86,6 @@ export default [
                     component: './Weapp/Train',
                   },
                   {
-                    path: '/weapp/trainrecord',
-                    name: '乘客管理',
-                    component: './Weapp/Trainrecord',
-                  },
-
-                  {
                     path: '/weapp/keyword',
                     name: '招聘岗位关键词',
                     component: './Weapp/Keyword',
