@@ -122,7 +122,7 @@ function Enroll(props) {
                         cvs(true);
                         cf(fields => {
                             for (let i in fields) {
-                                fields[i].value = record[i];
+                                fields[i].value = null;
                             }
                             return { ...fields }
                         });
