@@ -30,7 +30,9 @@ function Member(props) {
         [iftype, ciftype] = useState({
 
         }),
-        [activekey, setactivekey] = useState("agent");
+        [activekey, setactivekey] = useState("agent"),
+        [promo_num,cp]=useState("asc");
+
     const actionRef = useRef();
     let { data } = useRequest(() => attention())
 
@@ -41,6 +43,11 @@ function Member(props) {
     };
 
     const columns = [
+        {
+            dataIndex: 'index',
+            valueType: 'indexBorder',
+            width: 48,
+        },
         {
             title: '头像',
             dataIndex: 'head_image',
@@ -129,13 +136,21 @@ function Member(props) {
 
 
     return (
-        <Card title={<a style={{fontSize:18,paddingLeft:6,color:"#333"}}>{props.route.name}</a>} tabProps={{type:"card"}} tabList={tabList} activeTabKey={activekey} onTabChange={key => {
+        <Card title={<a style={{ fontSize: 18, paddingLeft: 6, color: "#333" }}>{props.route.name}</a>} tabProps={{ type: "card" }} tabList={tabList} activeTabKey={activekey} onTabChange={key => {
             setactivekey(key)
-        }} extra={<a style={{ color: "#f50" }}>共 <b style={{ fontSize: 24, padding: "0 4px" }}>{data}</b>人关注公众号</a>}>
+        }} extra={<a style={{ color: "#f50" }}>共 <b style={{ fontSize: 24, padding: "0 4px" }}>{data}</b>人关注公众号</a>} tabBarExtraContent={<a onClick={()=>{
+            cp((promo_num)=>{
+                if(promo_num=="asc"){
+                    return "desc"
+                }else{
+                    return "asc"
+                }
+            })
+        }}>排名{promo_num=="desc"?"由少到多":"由多到少"}</a>}>
             <AutoTable
                 columns={columns}
                 actionRef={actionRef}
-                extraparams={{ identity: activekey }}
+                extraparams={{ identity: activekey,promo_num }}
                 path="/api/member"
             ></AutoTable>
 
