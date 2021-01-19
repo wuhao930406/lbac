@@ -57,7 +57,10 @@ export async function deletefactory(params) {
     method: 'DELETE',
   });
 }
-
+//工厂列表
+export async function getfactory(params) {
+  return request('/api/factory/'+params);
+}
 
 
 //创建关键词

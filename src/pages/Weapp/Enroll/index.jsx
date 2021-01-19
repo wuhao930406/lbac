@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Card, Switch, Button, Modal, message, Popconfirm } from 'antd'
 import AutoTable from '@/components/AutoTable'
 import InitForm from '@/components/InitForm'
-import { enrollquit, enrollset_working, getjob } from '@/services/weapp'
+import { enrollquit, enrollset_working, getjob, getfactory } from '@/services/weapp'
 import { connect } from 'umi'
 import moment from 'moment'
 import RenderDetail from '@/components/RenderDetail';
@@ -40,6 +40,11 @@ function Enroll(props) {
             key: 'member_name',
         },
         {
+            title: '联系方式',
+            dataIndex: 'phone',
+            key: 'phone',
+        },
+        {
             title: '岗位',
             dataIndex: 'job',
             key: 'job',
@@ -69,7 +74,6 @@ function Enroll(props) {
                             ]} />
                         })
                     })
-
                 }}>{record.job.name}</a>
             }
         },
@@ -80,6 +84,31 @@ function Enroll(props) {
             search: false,
             render: (_, record) => {
                 return <a className="oneline" onClick={() => {
+                    getfactory(record.factory_id).then(res => {
+                        let data = res.data;
+                        Modal.info({
+                            title: "工厂信息",
+                            width: 1000,
+                            style: { top: 20 },
+                            content: <RenderDetail style={{ paddingTop: 8 }} formart={[
+                                {
+                                    "工厂图片": <div style={{display:"flex",paddingTop:12}}>
+                                        {
+                                            data.factory_image.map((it, i) => {
+                                                return <RenderClickImg size={36} key={i} url={it} style={{ margin: "0 2px 2px 0" }}></RenderClickImg>
+                                            })
+                                        }
+                                    </div>
+                                },
+                                { "工厂名称": data.name },
+                                { "工厂地址": data.address },
+                                { "工厂联系方式": data.contact },
+                                { "工厂介绍": data.description },
+                            ]} />
+                        })
+                    })
+
+
 
                 }}>{record.factory_name}</a>
             }
