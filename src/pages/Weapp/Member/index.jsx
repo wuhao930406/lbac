@@ -77,6 +77,15 @@ function Member(props) {
             search: false,
         },
         {
+            title: '是否关注',
+            dataIndex: 'is_attention',
+            key: 'is_attention',
+            search: false,
+            render: (_, record) => {
+                return <Tag color={!record.is_attention ? "grey" : "red"}>{!record.is_attention ? "未关注" : "已关注"}</Tag>
+            }
+        },
+        {
             title: '是否为会员',
             dataIndex: 'is_member',
             key: 'is_member',
