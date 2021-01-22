@@ -175,16 +175,16 @@ class AutoTable extends PureComponent {
       postData={(data) => {
         if (data) {
           this.setState({
-            total: data.total
+            total: data?.total
           })
         } else {
           this.setState({
-            total: data.dataList.length
+            total: data?.dataList.length
           })
         }
         //分页or不分页获取数据
         getDefaultSelected && getDefaultSelected(data);//存在默认选中向上返回选中值
-        let defaultval = pagination == "false" ? data.dataList : data ? data.list : [];//分页或不分页的接口返回数据
+        let defaultval = pagination == "false" ? data?.dataList : data ? data?.list : [];//分页或不分页的接口返回数据
         return defaultval
       }}
       bordered={bordered}

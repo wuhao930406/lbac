@@ -105,7 +105,7 @@ const UserModel = {
     },
     *stations({ payload }, { call, put }) {
       const response = yield call(stations, payload);
-      let list = [...new Set([...response.data.end_stations, ...response.data.start_stations])]
+      let list = [...new Set([...response.data?.end_stations, ...response.data?.start_stations])]
       yield put({
         type: 'save',
         payload: {

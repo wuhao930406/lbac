@@ -58,23 +58,23 @@ function Enroll(props) {
                             width: 1000,
                             style: { top: 20 },
                             content: <RenderDetail style={{ paddingTop: 8 }} formart={[
-                                { "岗位名称": data.name },
-                                { "工厂名称": data.factory.name },
-                                { "工厂地址": data.factory.address },
-                                { "工厂联系方式": data.factory.contact },
-                                { "月薪": data.min_month_salary + " - " + data.max_month_salary + "元" },
-                                { "时薪": data.hour_salary + "元" },
-                                { "补贴": data.subsidy },
-                                { "分类": data.max_classify_name + (data.min_classify_name ? " / " + data.min_classify_name : " ") },
-                                { "关键词": <span className="centers">{data.keywords.map(it => { return <b style={{ fontWeight: "normal", marginRight: 8 }}>{it.keyword_name}</b> })} </span> },
-                                { "发布状态": data.status == "open" ? "发布" : "下架" },
-                                { "福利": data.welfare },
-                                { "招聘条件": data.condition },
-                                { "岗位介绍": data.job_description },
+                                { "岗位名称": data?.name },
+                                { "工厂名称": data?.factory?.name },
+                                { "工厂地址": data?.factory?.address },
+                                { "工厂联系方式": data?.factory?.contact },
+                                { "月薪": data?.min_month_salary + " - " + data?.max_month_salary + "元" },
+                                { "时薪": data?.hour_salary + "元" },
+                                { "补贴": data?.subsidy },
+                                { "分类": data?.max_classify_name + (data?.min_classify_name ? " / " + data?.min_classify_name : " ") },
+                                { "关键词": <span className="centers">{data?.keywords.map(it => { return <b style={{ fontWeight: "normal", marginRight: 8 }}>{it.keyword_name}</b> })} </span> },
+                                { "发布状态": data?.status == "open" ? "发布" : "下架" },
+                                { "福利": data?.welfare },
+                                { "招聘条件": data?.condition },
+                                { "岗位介绍": data?.job_description },
                             ]} />
                         })
                     })
-                }}>{record.job.name}</a>
+                }}>{record.job?.name}</a>
             }
         },
         {
@@ -94,16 +94,16 @@ function Enroll(props) {
                                 {
                                     "工厂图片": <div style={{display:"flex",paddingTop:12}}>
                                         {
-                                            data.factory_image.map((it, i) => {
+                                            data?.factory_image.map((it, i) => {
                                                 return <RenderClickImg size={36} key={i} url={it} style={{ margin: "0 2px 2px 0" }}></RenderClickImg>
                                             })
                                         }
                                     </div>
                                 },
-                                { "工厂名称": data.name },
-                                { "工厂地址": data.address },
-                                { "工厂联系方式": data.contact },
-                                { "工厂介绍": data.description },
+                                { "工厂名称": data?.name },
+                                { "工厂地址": data?.address },
+                                { "工厂联系方式": data?.contact },
+                                { "工厂介绍": data?.description },
                             ]} />
                         })
                     })

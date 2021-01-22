@@ -119,8 +119,8 @@ export default function EditTable({ value, onChange, pagination, columns, extrap
           extraparams={extraparams}
           getDefaultSelected={(data) => {
             //查询时的初始化
-            if (data.selectedList && data.selectedList.length > 0 && first) {
-              onChange(data.selectedList);//设置value
+            if (data?.selectedList && data?.selectedList.length > 0 && first) {
+              onChange(data?.selectedList);//设置value
               cf(false);
             }
           }}
@@ -212,9 +212,9 @@ export default function EditTable({ value, onChange, pagination, columns, extrap
           extraparams={extraparams}
           getDefaultSelected={(data) => {
             //查询时的初始化
-            if (data.selectedList && data.selectedList.length > 0 && first) {
-              onChange(data.selectedList.map((it) => it[rowKey]));
-              cexpand([...expandedRows, ...data.selectedList]);
+            if (data?.selectedList && data?.selectedList.length > 0 && first) {
+              onChange(data?.selectedList.map((it) => it[rowKey]));
+              cexpand([...expandedRows, ...data?.selectedList]);
               cf(false);
             }
           }}

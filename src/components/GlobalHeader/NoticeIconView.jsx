@@ -118,7 +118,7 @@ class GlobalHeaderRight extends Component {
         <NoticeIcon.Tab
           tabKey="notification"
           count={unreadMsg.notification}
-          list={noticeData.notification}
+          list={noticedata?.notification}
           title="通知"
           emptyText="你已查看所有通知"
           showViewMore
@@ -126,7 +126,7 @@ class GlobalHeaderRight extends Component {
         <NoticeIcon.Tab
           tabKey="message"
           count={unreadMsg.message}
-          list={noticeData.message}
+          list={noticedata?.message}
           title="消息"
           emptyText="您已读完所有消息"
           showViewMore
@@ -136,7 +136,7 @@ class GlobalHeaderRight extends Component {
           title="待办"
           emptyText="你已完成所有待办"
           count={unreadMsg.event}
-          list={noticeData.event}
+          list={noticedata?.event}
           showViewMore
         />
       </NoticeIcon>

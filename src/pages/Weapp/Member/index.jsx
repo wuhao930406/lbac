@@ -105,7 +105,7 @@ function Member(props) {
                     member(record.id).then(res => {
                         ciftype({
                             title: record.name + "的下限",
-                            list: res.data.promos
+                            list: res.data?.promos
                         })
                     })
 

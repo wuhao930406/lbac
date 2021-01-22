@@ -32,8 +32,8 @@ if (pwa) {
         const channel = new MessageChannel();
 
         channel.port1.onmessage = (msgEvent) => {
-          if (msgEvent.data.error) {
-            reject(msgEvent.data.error);
+          if (msgEvent.data?.error) {
+            reject(msgEvent.data?.error);
           } else {
             resolve(msgEvent.data);
           }

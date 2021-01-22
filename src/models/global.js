@@ -19,7 +19,7 @@ const GlobalModel = {
       yield put({
         type: 'user/changeNotifyCount',
         payload: {
-          totalCount: data.length,
+          totalCount: data?.length,
           unreadCount,
         },
       });

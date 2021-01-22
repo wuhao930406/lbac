@@ -19,7 +19,7 @@ const startServer = spawn(/^win/.test(process.platform) ? 'npm.cmd' : 'npm', ['s
 
 startServer.stderr.on('data', (data) => {
   // eslint-disable-next-line
-  console.log(data.toString());
+  console.log(data?.toString());
 });
 
 startServer.on('exit', () => {
@@ -28,11 +28,11 @@ startServer.on('exit', () => {
 
 console.log('Starting development server for e2e tests...');
 startServer.stdout.on('data', (data) => {
-  console.log(data.toString());
+  console.log(data?.toString());
   // hack code , wait umi
   if (
-    (!once && data.toString().indexOf('Compiled successfully') >= 0) ||
-    data.toString().indexOf('Theme generated successfully') >= 0
+    (!once && data?.toString().indexOf('Compiled successfully') >= 0) ||
+    data?.toString().indexOf('Theme generated successfully') >= 0
   ) {
     // eslint-disable-next-line
     once = true;

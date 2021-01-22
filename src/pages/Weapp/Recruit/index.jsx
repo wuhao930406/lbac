@@ -144,7 +144,7 @@ function Recruit(props) {
                     key: 'name',
                     ellipsis: true,
                     render: (_, record) => {
-                        return <span>{record.factory.name}</span>
+                        return <span>{record.factory?.name}</span>
                     }
                 },
                 {
@@ -152,7 +152,7 @@ function Recruit(props) {
                     dataIndex: 'contact',
                     key: 'contact',
                     render: (_, record) => {
-                        return <span>{record.factory.contact}</span>
+                        return <span>{record.factory?.contact}</span>
                     }
                 },
             ]
@@ -219,9 +219,9 @@ function Recruit(props) {
                         style:{top:20},
                         content: <RenderDetail style={{paddingTop:8}} formart={[
                             { "岗位名称": record.name },
-                            { "工厂名称": record.factory.name },
-                            { "工厂地址": record.factory.address },
-                            { "工厂联系方式": record.factory.contact },
+                            { "工厂名称": record.factory?.name },
+                            { "工厂地址": record.factory?.address },
+                            { "工厂联系方式": record.factory?.contact },
                             { "月薪": record.min_month_salary + " - " + record.max_month_salary + "元" },
                             { "时薪": record.hour_salary + "元" },
                             { "补贴": record.subsidy },
@@ -314,7 +314,7 @@ function Recruit(props) {
             max_classify_id: values.classify[0],
             min_classify_id: values.classify[1]
         }
-        delete postdata.classify;
+        delete postdata?.classify;
         if (iftype.val == "add") {
             dispatch({
                 type: 'weapp/addjob',

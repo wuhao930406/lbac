@@ -90,8 +90,8 @@ request.interceptors.response.use(async (response, options) => {
   }
   const data = await response.clone().json();
   // 详情返回的response处理
-  if(data.code != 0) {
-    message.warn(data.message)
+  if(data?.code != 0) {
+    message.warn(data?.message)
   }
   return response;
 });

@@ -89,7 +89,7 @@ function getRule(req, res, u) {
   }
 
   if (params.name) {
-    dataSource = dataSource.filter((data) => data.name.includes(params.name || ''));
+    dataSource = dataSource.filter((data) => data?.name.includes(params.name || ''));
   }
 
   const result = {

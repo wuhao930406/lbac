@@ -27,7 +27,7 @@ export default function Editor({ value, onChange, height, rerender,serverURL,sty
       // 上传成功后调用param.success并传入上传后的文件地址
       param.success({
         url: xhr.responseText
-          ? JSON.parse(xhr.responseText).data.dataList[0].url
+          ? JSON.parse(xhr.responseText).data?.dataList[0].url
           : null,
         meta: {
           id: moment(),
