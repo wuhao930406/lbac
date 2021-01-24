@@ -9,7 +9,8 @@ import {
   addbanner, editbanner,
   addtrain, edittrain,
   addcustomer, editcustomer,
-  enrollverify, enrollquit, enrollset_working
+  enrollverify, enrollquit, enrollset_working,
+  agentpromo
 } from '@/services/weapp';
 
 const UserModel = {
@@ -19,6 +20,10 @@ const UserModel = {
     stations: [],
   },
   effects: {
+    *agentpromo({ payload }, { call, put }) {
+      const response = yield call(agentpromo, payload);
+      return response
+    },
     *addstore({ payload }, { call, put }) {
       const response = yield call(addstore, payload);
       return response

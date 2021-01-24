@@ -46,12 +46,39 @@ function Recruit(props) {
                 name: ['max_month_salary'],
                 required: true,
             },
+            job_type: {
+                value: null,
+                type: 'radio',
+                title: '小时工/正式工',
+                name: ['job_type'],
+                required: true,
+                options:[
+                    {
+                       label:"小时工",
+                       value:"hour"       
+                    },
+                    {
+                        label:"正式工",
+                        value:"formal"    
+                     },
+                ],
+                linked:true,
+            },
             hour_salary: {
                 value: null,
                 type: 'inputnumber',
                 title: '时薪 (小时/元)',
                 name: ['hour_salary'],
                 required: true,
+                belinked:{
+                    hides: [ //可以多个条件并存 数组内添加即可
+                        {
+                            name: "job_type", //联动的是哪个formitem
+                            unequalvalue: "hour", //这个formitem值为多少 hide
+                            required: true
+                        }
+                    ],
+                }
             },
             classify: {
                 value: null,
@@ -144,7 +171,7 @@ function Recruit(props) {
                     key: 'name',
                     ellipsis: true,
                     render: (_, record) => {
-                        return <span>{record.factory?.name}</span>
+                        return <span>{record?.factory?.name}</span>
                     }
                 },
                 {
@@ -152,7 +179,7 @@ function Recruit(props) {
                     dataIndex: 'contact',
                     key: 'contact',
                     render: (_, record) => {
-                        return <span>{record.factory?.contact}</span>
+                        return <span>{record?.factory?.contact}</span>
                     }
                 },
             ]
@@ -168,7 +195,16 @@ function Recruit(props) {
             key: 'range',
             search: false,
             render: (_, record) => {
-                return <span>{record.min_month_salary + " - " + record.max_month_salary} </span>
+                return <span>{record?.min_month_salary + " - " + record?.max_month_salary} </span>
+            }
+        },
+        {
+            title: '小时工/正式工',
+            dataIndex: 'job_type',
+            key: 'job_type',
+            search: false,
+            render: (_, record) => {
+                return <span>{record?.job_type=="formal"?"正式工":record?.job_type=="hour"?"小时工":""} </span>
             }
         },
         {
@@ -188,7 +224,7 @@ function Recruit(props) {
             dataIndex: 'status',
             key: 'status',
             search: false,
-            render: (_, record) => <span>{record.status == "open" ? "发布" : "下架"}</span>
+            render: (_, record) => <span>{record?.status == "open" ? "发布" : "下架"}</span>
         },
         // {
         //     title: '子分类',
@@ -202,7 +238,7 @@ function Recruit(props) {
         //     key: 'keywords',
         //     search: false,
         //     render: (_, record) => {
-        //         return <span>{record.keywords.map(it => {
+        //         return <span>{record?.keywords.map(it => {
         //             return <Tag>{it.keyword_name}</Tag>
         //         })} </span>
         //     }
@@ -218,19 +254,20 @@ function Recruit(props) {
                         width:1000,
                         style:{top:20},
                         content: <RenderDetail style={{paddingTop:8}} formart={[
-                            { "岗位名称": record.name },
-                            { "工厂名称": record.factory?.name },
-                            { "工厂地址": record.factory?.address },
-                            { "工厂联系方式": record.factory?.contact },
-                            { "月薪": record.min_month_salary + " - " + record.max_month_salary + "元" },
-                            { "时薪": record.hour_salary + "元" },
-                            { "补贴": record.subsidy },
-                            { "分类": record.max_classify_name + (record.min_classify_name ? " / " + record.min_classify_name : " ") },
-                            { "关键词": <span className="centers">{record.keywords.map(it => { return <b style={{fontWeight:"normal",marginRight:8}}>{it.keyword_name}</b> })} </span> },
-                            { "发布状态": record.status == "open" ? "发布" : "下架" },
-                            { "福利": record.welfare },
-                            { "招聘条件": record.condition },
-                            { "岗位介绍": record.job_description },
+                            { "岗位名称": record?.name },
+                            { "工厂名称": record?.factory?.name },
+                            { "工厂地址": record?.factory?.address },
+                            { "工厂联系方式": record?.factory?.contact },
+                            { "月薪": record?.min_month_salary + " - " + record?.max_month_salary + "元" },
+                            { "时薪": record?.hour_salary + "元" },
+                            { "补贴": record?.subsidy?record?.subsidy:"无补贴" },
+                            { "小时工/正式工": record?.job_type=="formal"?"正式工":record?.job_type=="hour"?"小时工":""},
+                            { "分类": record?.max_classify_name + (record?.min_classify_name ? " / " + record?.min_classify_name : " ") },
+                            { "关键词": <span className="centers">{record?.keywords && record?.keywords.map(it => { return <b style={{fontWeight:"normal",marginRight:8}}>{it.keyword_name}</b> })} </span> },
+                            { "发布状态": record?.status == "open" ? "发布" : "下架" },
+                            { "福利": record?.welfare },
+                            { "招聘条件": record?.condition },
+                            { "岗位介绍": record?.job_description },
                         ]} />
                     })
                 }}>
@@ -243,10 +280,10 @@ function Recruit(props) {
                             for (let i in fields) {
                                 fields[i].value = record[i];
                                 if (i == "classify") {
-                                    fields[i].value = [record.max_classify_id, record.min_classify_id]
+                                    fields[i].value = [record?.max_classify_id, record?.min_classify_id]
                                 }
                                 if (i == "keyword_ids") {
-                                    fields[i].value = record.keywords && record.keywords.map((it) => it.keyword_id);
+                                    fields[i].value = record?.keywords && record?.keywords.map((it) => it.keyword_id);
                                 }
                             }
                             return { ...fields }
@@ -254,7 +291,7 @@ function Recruit(props) {
                         ciftype({
                             val: "edit",
                             title: "编辑岗位",
-                            id: record.id
+                            id: record?.id
                         })
                     }}
                 >
@@ -264,7 +301,7 @@ function Recruit(props) {
                     placement="bottom"
                     title={"确认删除该岗位？"}
                     onConfirm={() => {
-                        deletejob(record.id).then(res => {
+                        deletejob(record?.id).then(res => {
                             if (res.code == 0) {
                                 message.success("操作成功");
                                 actionRef.current.reload();

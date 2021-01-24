@@ -1,4 +1,4 @@
-import { Table, Input, Divider, Tooltip, InputNumber, Select } from 'antd';
+import { Table, Input, Tag, Tooltip, InputNumber, Select } from 'antd';
 import React, { useState, useMemo, useEffect } from 'react';
 import AutoTable from '../AutoTable/index.jsx';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -222,6 +222,9 @@ export default function EditTable({ value, onChange, pagination, columns, extrap
           rowSelection={{
             selectedRowKeys: value ? value : [],
             preserveSelectedRowKeys: true,
+            getCheckboxProps: (record) => ({
+              disabled: record.disabled, // Column configuration not to be checked
+            }),
             onChange: (selectedRowKeys, expandedRowes) => {
               onChange(selectedRowKeys);
               let limits = unique([...expandedRows, ...expandedRowes], rowKey), expander = [];
@@ -231,63 +234,24 @@ export default function EditTable({ value, onChange, pagination, columns, extrap
               cexpand(expander);
             }
           }}
-          tableRender={(_, dom) => <div
-            style={{
-              display: 'flex',
-              width: '100%',
-              overflow: "hidden"
-            }}
-          >
+          tableRender={(_, dom) => 
             <div
               style={{
                 flex: 1,
+                position:"relative"
               }}
             >
-              {dom}
-            </div>
-            {
-              value?.length > 0 && <div style={{ width: 120, overflow: "hidden", display: "flex", flexDirection: "column" }}>
+              <div style={{  overflow: "hidden", position:"absolute",right:0,top:-46,display:"flex",justifyContent:"center",alignItems:"center"}}>
                 <div style={{ padding: "11px 6px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ fontSize: 16 }}>选中：</span>
                   <span style={{ fontSize: 16 }}>{value?.length}个</span>
                 </div>
-                <div style={{ flex: 1, paddingBottom: 18 }}>
-                  <Scrollbars
-                    thumbMinSize={10}
-                    autoHide
-                    style={{ width: '100%', height: '100%' }}
-                    hideTracksWhenNotNeeded={true}
-                  >
-                    {
-                      expandedRows.map((it) => {
-                        return <div className={styles.items} onClick={() => {
-                          changecur(it[rowKey])
-                        }}>
-                          <Tooltip title={it[rowName] ? it[rowName] : ""}>
-                            <i>{it[rowName] ? it[rowName] : ""}</i>
-                          </Tooltip>
-
-                          <CloseOutlined onClick={(e) => {
-                            e.stopPropagation();
-                            if (it[rowKey] == currentkey) {
-                              changecur(null)
-                            }
-                            let newvalues = value.filter(item => item != it[rowKey]);
-                            onChange(newvalues);
-                            let newexpandedRows = expandedRows.filter(its => its[rowKey] != it[rowKey])
-                            cexpand(newexpandedRows);
-                          }} />
-                        </div>
-                      })
-
-                    }
-                  </Scrollbars>
-
-                </div>
+                <Tag style={{marginLeft:8,marginRight:0,cursor:"pointer"}} color='red' onClick={()=>{
+                  onChange([]);
+                }}>清空</Tag>
               </div>
-            }
-
-          </div>
+              {dom}
+            </div>
           }
           rowClassNameFn={(record, index) => {
             if (currentkey === record[rowKey]) {

@@ -773,7 +773,7 @@ let InitForm = ({ fields, onChange, submitting, submitData, actions, col, mode, 
                         label={item.title}
                         name={item.name[0]}
                         rules={[
-                          { required: item.required, message: `请输入${item.title}` },
+                          { required: item.required, message: `请完善${item.title}` },
                         ]}
                       >
                         <EditTable
