@@ -1,4 +1,4 @@
-import { addrole, editrole, adduser, edituser,addstore,editstore } from '@/services/basic';
+import { addrole, editrole, adduser, edituser, addstore, editstore, rolemenu } from '@/services/basic';
 
 const UserModel = {
   namespace: 'basic',
@@ -31,7 +31,10 @@ const UserModel = {
       const response = yield call(editstore, payload);
       return response
     },
-
+    *rolemenu({ payload }, { call, put }) {
+      const response = yield call(rolemenu, payload);
+      return response
+    },
 
   },
   reducers: {

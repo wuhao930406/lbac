@@ -8,11 +8,12 @@ import {
   WeiboCircleOutlined,
 } from '@ant-design/icons';
 import { Alert, Space, message, Tabs } from 'antd';
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import ProForm, { ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
 import { useIntl, connect, FormattedMessage } from 'umi';
 import { getFakeCaptcha } from '@/services/login';
 import styles from './index.less';
+
 
 const LoginMessage = ({ content }) => (
   <Alert
@@ -31,16 +32,26 @@ const Login = (props) => {
   const [type, setType] = useState('account');
   const intl = useIntl();
 
+  useEffect(() => {
+    const { dispatch } = props;
+    dispatch({
+      type: 'user/resetCurrent',
+    });
+  }, []);
+
   const handleSubmit = (values) => {
     const { dispatch } = props;
     const postdata = {
-      name:values.userName,
-      password:values.password
+      name: values.userName,
+      password: values.password
     }
-
     dispatch({
       type: 'login/login',
       payload: { ...postdata },
+    }).then(()=>{
+      dispatch({
+        type: 'user/fetchCurrent',
+      })
     });
   };
 
@@ -76,46 +87,46 @@ const Login = (props) => {
             })}
           />
         )}
-         <>
-            <ProFormText
-              name="userName"
-              fieldProps={{
-                size: 'large',
-                prefix: <UserOutlined className={styles.prefixIcon} />,
-              }}
-              placeholder={"请输入用户名"}
-              rules={[
-                {
-                  required: true,
-                  message: (
-                    <FormattedMessage
-                      id="pages.login.username.required"
-                      defaultMessage="请输入用户名!"
-                    />
-                  ),
-                },
-              ]}
-            />
-            <ProFormText.Password
-              name="password"
-              fieldProps={{
-                size: 'large',
-                prefix: <LockTwoTone className={styles.prefixIcon} />,
-              }}
-              placeholder={"请输入密码"}
-              rules={[
-                {
-                  required: true,
-                  message: (
-                    <FormattedMessage
-                      id="pages.login.password.required"
-                      defaultMessage="请输入密码！"
-                    />
-                  ),
-                },
-              ]}
-            />
-          </>
+        <>
+          <ProFormText
+            name="userName"
+            fieldProps={{
+              size: 'large',
+              prefix: <UserOutlined className={styles.prefixIcon} />,
+            }}
+            placeholder={"请输入用户名"}
+            rules={[
+              {
+                required: true,
+                message: (
+                  <FormattedMessage
+                    id="pages.login.username.required"
+                    defaultMessage="请输入用户名!"
+                  />
+                ),
+              },
+            ]}
+          />
+          <ProFormText.Password
+            name="password"
+            fieldProps={{
+              size: 'large',
+              prefix: <LockTwoTone className={styles.prefixIcon} />,
+            }}
+            placeholder={"请输入密码"}
+            rules={[
+              {
+                required: true,
+                message: (
+                  <FormattedMessage
+                    id="pages.login.password.required"
+                    defaultMessage="请输入密码！"
+                  />
+                ),
+              },
+            ]}
+          />
+        </>
 
         {/* <div
           style={{

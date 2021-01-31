@@ -185,6 +185,17 @@ function Menu(props) {
                     icon: 'wechat',
                     routes: [
                       {
+                        path: '/weapp/member',
+                        name: '会员管理',
+                        component: './Weapp/Member',
+                      },
+                      {
+                        path: '/weapp/customer',
+                        name: '客服管理',
+                        component: './Weapp/Customer',
+                      },
+                      
+                      {
                         path: '/weapp/store',
                         name: '门店管理',
                         component: './Weapp/Store',
@@ -194,8 +205,38 @@ function Menu(props) {
                         name: '工厂管理',
                         component: './Weapp/Factory',
                       },
+                      {
+                        path: '/weapp/train',
+                        name: '车次管理',
+                        component: './Weapp/Train',
+                      },
+                      {
+                        path: '/weapp/keyword',
+                        name: '招聘岗位关键词',
+                        component: './Weapp/Keyword',
+                      },
+                      {
+                        path: '/weapp/classify',
+                        name: '招聘岗位分类',
+                        component: './Weapp/Classify',
+                      },
+                      {
+                        path: '/weapp/recruit',
+                        name: '招聘岗位管理',
+                        component: './Weapp/Recruit',
+                      },
+                      {
+                        path: '/weapp/enroll',
+                        name: '报名信息管理',
+                        component: './Weapp/Enroll',
+                      },
+                      {
+                        path: '/weapp/banner',
+                        name: '公众号轮播图',
+                        component: './Weapp/Banner',
+                      },
                     ],
-                  }]}
+                  },]}
             ></AutoTable>
 
             <Modal

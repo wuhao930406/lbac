@@ -9,6 +9,16 @@ export async function setenable(params) {
   });
 }
 
+
+//角色详情
+export async function menu(params) {
+  return request('/api/menu');
+}
+
+//角色详情
+export async function getrole(params) {
+  return request('/api/role/'+params);
+}
 //角色列表
 export async function role(params) {
   return request('/api/role'+ bodyParse(params));
@@ -34,6 +44,14 @@ export async function editrole(params) {
 export async function deleterole(params) {
   return request('/api/role/'+params, {
     method: 'DELETE',
+  });
+}
+
+//更新角色
+export async function rolemenu(params) {
+  return request('/api/role/role_menu', {
+    method: 'PUT',
+    data: params,
   });
 }
 
