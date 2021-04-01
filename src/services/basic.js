@@ -67,7 +67,13 @@ export async function resetuser(params) {
     data: params,
   });
 }
-
+//重置密码
+export async function editpwd(params) {
+  return request('/api/user/edit_password', {
+    method: 'PUT',
+    data: params,
+  });
+}
 
 //用户详情
 export async function getuser(params) {
