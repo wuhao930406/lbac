@@ -41,7 +41,7 @@ let loop = (data, title, key, children) => (data && data?.length > 0) && data?.m
   if (item[defaultchildren]) {
     return (
       <TreeNode value={item[defaultkey]} key={item[defaultkey]} title={titles}>
-        {loop(item[defaultchildren])}
+        {loop(item[defaultchildren], defaulttitle, defaultkey, defaultchildren)}
       </TreeNode>
     );
   } else {
@@ -753,6 +753,8 @@ let InitForm = ({ fields, onChange, submitting, submitData, actions, col, mode, 
                           disabled={item.disabled}
                           allowClear
                           showSearch
+                          multiple={item.multiple}
+                          treeCheckable={item.treeCheckable}
                           treeDefaultExpandAll
                           placeholder={`请选择...`}
                         >
@@ -773,7 +775,7 @@ let InitForm = ({ fields, onChange, submitting, submitData, actions, col, mode, 
                         label={item.title}
                         name={item.name[0]}
                         rules={[
-                          { required: item.required, message: `请输入${item.title}` },
+                          { required: item.required, message: `请完善${item.title}` },
                         ]}
                       >
                         <EditTable

@@ -4,9 +4,9 @@ import { history } from 'umi';
 
 const NoFoundPage = () => (
   <Result
-    status="404"
-    title="404"
-    subTitle="找不到该页面"
+    status="403"
+    title="403"
+    subTitle="抱歉该模块您没有查看的权限"
     extra={
       <Button type="primary" onClick={() => history.push('/')}>
         返回首页

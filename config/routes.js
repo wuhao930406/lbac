@@ -38,6 +38,15 @@ export default [
                 icon: 'setting',
                 routes: [
                   {
+                    path: '/basic',
+                    redirect: '/basic/403',
+                  },
+                  {
+                    path: '/basic/403',
+                    name: '403',
+                    component: './403',
+                  },
+                  {
                     path: '/basic/user',
                     name: '用户管理',
                     component: './Basic/User',
@@ -59,6 +68,15 @@ export default [
                 name: '公众号信息管理',
                 icon: 'wechat',
                 routes: [
+                  {
+                    path: '/weapp',
+                    redirect: '/weapp/403',
+                  },
+                  {
+                    path: '/weapp/403',
+                    name: '403',
+                    component: './403',
+                  },
                   {
                     path: '/weapp/member',
                     name: '会员管理',

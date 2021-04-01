@@ -3,7 +3,6 @@ import { useState } from 'react';
 import React from 'react';
 
 export default ({ formart,style={} }) => {
-
   return (
     <div style={style}>
       {
@@ -16,8 +15,6 @@ export default ({ formart,style={} }) => {
           </div>
         })
       }
-
-
     </div>
   );
 };

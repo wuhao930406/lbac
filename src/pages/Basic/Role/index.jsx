@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import { Card, Switch, Button, Modal, message, Popconfirm } from 'antd'
 import AutoTable from '@/components/AutoTable'
 import InitForm from '@/components/InitForm'
-import { deleterole, role, store } from '@/services/basic'
-import { connect } from 'umi'
+import { deleterole, menu, getrole } from '@/services/basic'
+import { connect,useRequest } from 'umi'
 
 // type 类型有 table treeselect upload inputnumber datepicker daterange radio select textarea autoinput editor password input 
 
@@ -25,7 +25,87 @@ let defaultFields = {
         //serverURL: "https://www.mocky.io/v2/5cc8019d300000980a055e76"//替换为自己的上传地址 富文本图片/附件
         col: { span: 24 },//栅格布局 默认 12
     },
-}
+}, quan = [
+    {
+        path: '/basic',
+        name: '系统基础管理',
+        icon: 'setting',
+        routes: [
+            {
+                path: '/basic/user',
+                name: '用户管理',
+                component: './Basic/User',
+            },
+            {
+                path: '/basic/role',
+                name: '角色管理',
+                component: './Basic/Role',
+            },
+            {
+                path: '/basic/menu',
+                name: '菜单权限',
+                component: './Basic/Menu',
+            },
+        ],
+    },
+    {
+        path: '/weapp',
+        name: '公众号信息管理',
+        icon: 'wechat',
+        routes: [
+            {
+                path: '/weapp/member',
+                name: '会员管理',
+                component: './Weapp/Member',
+            },
+            {
+                path: '/weapp/customer',
+                name: '客服管理',
+                component: './Weapp/Customer',
+            },
+
+            {
+                path: '/weapp/store',
+                name: '门店管理',
+                component: './Weapp/Store',
+            },
+            {
+                path: '/weapp/factory',
+                name: '工厂管理',
+                component: './Weapp/Factory',
+            },
+            {
+                path: '/weapp/train',
+                name: '车次管理',
+                component: './Weapp/Train',
+            },
+            {
+                path: '/weapp/keyword',
+                name: '招聘岗位关键词',
+                component: './Weapp/Keyword',
+            },
+            {
+                path: '/weapp/classify',
+                name: '招聘岗位分类',
+                component: './Weapp/Classify',
+            },
+            {
+                path: '/weapp/recruit',
+                name: '招聘岗位管理',
+                component: './Weapp/Recruit',
+            },
+            {
+                path: '/weapp/enroll',
+                name: '报名信息管理',
+                component: './Weapp/Enroll',
+            },
+            {
+                path: '/weapp/banner',
+                name: '公众号轮播图',
+                component: './Weapp/Banner',
+            },
+        ],
+    }]
 
 
 function Role(props) {
@@ -57,9 +137,49 @@ function Role(props) {
             title: '操作',
             valueType: 'option',
             render: (text, record, _, action) => [
+                <a onClick={() => {
+                    getrole(record.id).then(res=>{
+                        let menu_ids = res.data.menu_ids;
+                        let defaultval =  menu_ids?menu_ids.map((it)=>{
+                            let res = data.filter((item)=>item.id==it);
+                            return res?res[0].path:''
+                        }) :[]  
+                        
+
+                        cf({
+                            menu_ids: {
+                                value: defaultval?defaultval:[],
+                                type: 'treeselect',
+                                title: '菜单权限',
+                                name: ['menu_ids'],
+                                required: true,
+                                options:quan,
+                                multiple:true,
+                                treeCheckable: true,
+                                formart:{
+                                    title:"name",
+                                    key:"path",
+                                    children:"routes"
+                                },
+                                col:{span:24}
+                            }
+                        })
+
+                        
+                    })
+                    
+                    cvs(true);
+                    ciftype({
+                        val: "quan",
+                        title: "角色赋权",
+                        id: record.id
+                    })
+                }}>
+                    角色赋权
+                </a>,
                 <a
                     disabled={record.role_type != 0}
-                    style={{color:record.role_type != 0?"#999":"auto"}}
+                    style={{ color: record.role_type != 0 ? "#999" : "auto" }}
                     onClick={() => {
                         cvs(true);
                         cf(fields => {
@@ -91,7 +211,7 @@ function Role(props) {
                     okText="删除"
                     onCancel="取消"
                 >
-                    <a style={{color:"#f50"}}>
+                    <a style={{ color: "#f50" }}>
                         删除
                     </a>
                 </Popconfirm>
@@ -100,6 +220,10 @@ function Role(props) {
             ],
         },
     ]
+
+    let {data,loading} = useRequest(()=>{
+        return menu({})
+    })
 
     let extrarender = (<div>
         <Button size={"middle"} type="primary" onClick={() => {
@@ -120,6 +244,7 @@ function Role(props) {
 
     let saveData = (values) => {
         let { dispatch } = props;
+        console.log(values)
         if (iftype.val == "add") {
             dispatch({
                 type: 'basic/addrole',
@@ -134,6 +259,23 @@ function Role(props) {
         } else if (iftype.val == "edit") {
             dispatch({
                 type: 'basic/editrole',
+                payload: { ...values, id: iftype.id }
+            }).then(res => {
+                if (res.code == 0) {
+                    message.success("操作成功");
+                    actionRef.current.reload();
+                    cvs(false)
+                }
+            })
+        }else if(iftype.val == "quan"){
+            values.menu_ids = values.menu_ids.map((it)=>{
+                console.log(data,it)
+                let res = data.filter((item)=>item.path == it);
+                return res?res[0].id:''
+            })
+            console.log(values.menu_ids)
+            dispatch({
+                type: 'basic/rolemenu',
                 payload: { ...values, id: iftype.id }
             }).then(res => {
                 if (res.code == 0) {

@@ -79,6 +79,18 @@ export async function editkeyword(params) {
   });
 }
 
+//绑定推广员/经纪人的关系
+export async function agentpromo(params) {
+  return request('/api/agent_promo/' + params.id, {
+    method: 'PUT',
+    data: params,
+  });
+}
+//获取分类
+export async function getagentpromo(params) {
+  return request('/api/agent_promo' + bodyParse(params));
+}
+
 //获取分类
 export async function getclassify(params) {
   return request('/api/max_classify' + bodyParse(params));
@@ -278,7 +290,7 @@ export async function stations() {
 
 //会员
 export async function member(params) {
-  return request('/api/member/'+params);
+  return request('/api/member/'+params.id + bodyParse({promo_type:params.promo_type}));
 }
 
 //修改会员信息
