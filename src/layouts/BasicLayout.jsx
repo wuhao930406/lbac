@@ -66,9 +66,9 @@ const BasicLayout = (props) => {
 
   const menuDataRender = (menuList) => {
     let res = user.currentUser;
-    console.log(res)
-    let filterlist = res?.menus?res.menus:[];
-    let firstarr = ["/","/welcome","/basic","/weapp"]
+    
+    let filterlist = res?.menus ? res.menus : [], patharr = filterlist.map(it => it.path);
+    let firstarr = ["/", "/welcome", "/basic", "/weapp"];
     filterlist = filterlist.map((it)=>it.path);
     filterlist  = [...firstarr,...filterlist]; 
     return menuList.filter((it)=>{
